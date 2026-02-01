@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Md Shariful Islam Shoeb | Database Developer & System Engineer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Matrix Rain Background -->
+    <canvas id="matrix-bg"></canvas>
+    
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+    
+    <!-- Scan Lines Effect -->
+    <div class="scan-lines"></div>
+    
+    <!-- Grid Overlay -->
+    <div class="grid-overlay"></div>
+    
+    <!-- Mouse Reactive Glow -->
+    <div class="mouse-glow"></div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <span class="logo-bracket">&lt;</span>
+                <span class="logo-text">SHOEB</span>
+                <span class="logo-bracket">/&gt;</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link active"><span class="nav-prefix">./</span>Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#experience" class="nav-link">Experience</a></li>
+                <li><a href="#education" class="nav-link">Education</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-grid">
+            <!-- Left Content -->
+            <div class="hero-content">
+                <!-- Role Badge -->
+                <div class="role-badge">
+                    <i class="fas fa-database"></i>
+                    <span>Database Developer & System Engineer</span>
+                </div>
+
+                <p class="greeting">Hello, I'm</p>
+                
+                <!-- Cyber Name Box -->
+                <div class="cyber-name-box">
+                    <div class="name-glitch" data-text="Md Shariful Islam Shoeb">
+                        <span>Md Shariful Islam Shoeb</span>
+                    </div>
+                    <div class="cyber-corners">
+                        <span class="corner tl"></span>
+                        <span class="corner tr"></span>
+                        <span class="corner bl"></span>
+                        <span class="corner br"></span>
+                    </div>
+                    <div class="scan-line"></div>
+                </div>
+
+                <!-- Typing Text -->
+                <div class="typing-container">
+                    <span class="typing-text" id="typing-text">Building Digital Infrastructure</span>
+                    <span class="typing-cursor">|</span>
+                </div>
+
+                <!-- Description -->
+                <p class="hero-description">
+                    Database Developer & System Engineer with expertise in Oracle APEX, PL/SQL, 
+                    and DevOps technologies. Passionate about building robust database solutions 
+                    and managing enterprise systems.
+                </p>
+
+                <!-- CTA Buttons -->
+                <div class="cta-buttons">
+                    <a href="#contact" class="btn btn-primary">
+                        <i class="fas fa-envelope"></i>
+                        <span>GET IN TOUCH</span>
+                    </a>
+                    <a href="#skills" class="btn btn-outline">
+                        <span>&lt;/&gt;</span>
+                        <span>VIEW SKILLS</span>
+                    </a>
+                </div>
+
+                <!-- Stats -->
+                <div class="hero-stats">
+                    <div class="stat-box">
+                        <div class="stat-number"><span class="count" data-target="2">0</span></div>
+                        <div class="stat-label">Years Experience</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number"><span class="count" data-target="30">0</span><span class="plus">+</span></div>
+                        <div class="stat-label">Tools Mastered</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number"><span class="count" data-target="5">0</span></div>
+                        <div class="stat-label">Tech Domains</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side - Profile Card -->
+            <div class="hero-profile">
+                <div class="profile-card">
+                    <div class="profile-glow"></div>
+                    <div class="profile-image-wrapper">
+                        <div class="profile-ring"></div>
+                        <div class="profile-ring ring-2"></div>
+                        <div class="profile-ring ring-3"></div>
+                        <img src="profile.jpeg" alt="Md Shariful Islam Shoeb" class="profile-image">
+                    </div>
+                    <h3 class="profile-name">Md Shariful Islam Shoeb</h3>
+                    <p class="profile-title">Database Developer & System Engineer</p>
+                    
+                    <!-- Social Links -->
+                    <div class="profile-socials">
+                        <a href="https://www.linkedin.com/in/msishoeb/" target="_blank" class="social-icon" data-tooltip="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://github.com/shoeb-devops" target="_blank" class="social-icon" data-tooltip="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="mailto:sharifulislamshoeb@gmail.com" class="social-icon" data-tooltip="Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                        <a href="tel:+8801319899171" class="social-icon" data-tooltip="Phone">
+                            <i class="fas fa-phone"></i>
+                        </a>
+                    </div>
+
+                    <!-- Cyber Corners -->
+                    <div class="card-corners">
+                        <span class="corner tl"></span>
+                        <span class="corner tr"></span>
+                        <span class="corner bl"></span>
+                        <span class="corner br"></span>
+                    </div>
+                </div>
+
+                <!-- Floating Tech Icons -->
+                <div class="floating-icons">
+                    <div class="float-icon icon-1"><i class="fas fa-database"></i></div>
+                    <div class="float-icon icon-2"><i class="fab fa-docker"></i></div>
+                    <div class="float-icon icon-3"><i class="fas fa-server"></i></div>
+                    <div class="float-icon icon-4"><i class="fab fa-linux"></i></div>
+                    <div class="float-icon icon-5"><i class="fab fa-github"></i></div>
+                    <div class="float-icon icon-6"><i class="fas fa-code"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+            <div class="mouse-icon">
+                <div class="mouse-wheel"></div>
+            </div>
+            <span>Scroll Down</span>
+        </div>
+
+        <!-- Binary Decoration -->
+        <div class="binary-decoration left">01001001 01010100</div>
+        <div class="binary-decoration right">01010000 01010010 01001111</div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section about-section">
+        <div class="container">
+            <h2 class="section-title">
+                <span class="title-bracket">&lt;</span>
+                About Me
+                <span class="title-bracket">/&gt;</span>
+            </h2>
+
+            <div class="about-content">
+                <div class="terminal-window">
+                    <div class="terminal-header">
+                        <div class="terminal-buttons">
+                            <span class="terminal-btn red"></span>
+                            <span class="terminal-btn yellow"></span>
+                            <span class="terminal-btn green"></span>
+                        </div>
+                        <span class="terminal-title">shoeb@portfolio:~</span>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="terminal-line">
+                            <span class="prompt">$</span>
+                            <span class="command">cat about.txt</span>
+                        </div>
+                        <div class="terminal-output">
+                            <p class="output-text">
+                                > Name: <span class="highlight">Md Shariful Islam Shoeb</span><br>
+                                > Role: <span class="highlight">Database Developer & System Engineer</span><br>
+                                > Location: <span class="highlight">Narayanganj, Bangladesh</span><br>
+                                > Status: <span class="status-available">Available for opportunities</span>
+                            </p>
+                        </div>
+                        <div class="terminal-line">
+                            <span class="prompt">$</span>
+                            <span class="command">cat bio.md</span>
+                        </div>
+                        <div class="terminal-output">
+                            <p class="output-text bio-text">
+                                I am a Database Developer & System Engineer with expertise in Oracle APEX,
+                                PL/SQL, PostgreSQL, and DevOps technologies. Currently serving as
+                                System Engineer at B.A.R & Associates, I specialize in database development
+                                and enterprise system management.
+                            </p>
+                        </div>
+                        <div class="terminal-line typing-line">
+                            <span class="prompt">$</span>
+                            <span class="cursor-blink">_</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-info-grid">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Current Role</h4>
+                            <p>System Engineer</p>
+                            <span class="info-sub">B.A.R & Associates</span>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Education</h4>
+                            <p>BBA in Management</p>
+                            <span class="info-sub">Barishal BM College</span>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Training</h4>
+                            <p>Oracle Database PGD</p>
+                            <span class="info-sub">IsDB-BISEW</span>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Location</h4>
+                            <p>Narayanganj, Bangladesh</p>
+                            <span class="info-sub">Open to Remote</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section skills-section">
+        <div class="container">
+            <h2 class="section-title">
+                <span class="title-bracket">&lt;</span>
+                Skills & Technologies
+                <span class="title-bracket">/&gt;</span>
+            </h2>
+
+            <div class="skills-grid">
+                <!-- Database Development -->
+                <div class="skill-category">
+                    <div class="category-header">
+                        <i class="fas fa-database"></i>
+                        <h3>Database Development</h3>
+                    </div>
+                    <div class="skills-list">
+                        <div class="skill-item">
+                            <span class="skill-name">Oracle PL/SQL</span>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="90"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Oracle APEX</span>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="85"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Oracle Forms/Reports</span>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="80"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">PostgreSQL</span>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="75"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DevOps & Tools -->
+                <div class="skill-category">
+                    <div class="category-header">
+                        <i class="fab fa-docker"></i>
+                        <h3>DevOps & Tools</h3>
+                    </div>
+                    <div class="skills-list">
+                        <div class="skill-item">
+                            <span class="skill-name">Docker</span>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="80"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">GitHub Actions</span>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="75"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Git & Version Control</span>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="85"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">CI/CD Pipelines</span>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="70"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Engineering -->
+                <div class="skill-category">
+                    <div class="category-header">
+                        <i class="fas fa-server"></i>
+                        <h3>System Engineering</h3>
+                    </div>
+                    <div class="skills-list">
+                        <div class="skill-item">
+                            <span class="skill-name">Linux Administration</span>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="80"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Windows Server</span>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="75"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">MikroTik Router</span>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="70"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Network Configuration</span>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="75"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other Databases -->
+                <div class="skill-category">
+                    <div class="category-header">
+                        <i class="fas fa-laptop-code"></i>
+                        <h3>Other Databases</h3>
+                    </div>
+                    <div class="skills-list">
+                        <div class="skill-item">
+                            <span class="skill-name">MS SQL Server</span>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="75"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">MySQL</span>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="70"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Database Design</span>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="80"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">SQL Optimization</span>
+                            <div class="skill-bar"><div class="skill-progress" data-progress="75"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tech Stack Icons -->
+            <div class="tech-stack">
+                <div class="tech-item"><i class="fas fa-database"></i><span>Oracle</span></div>
+                <div class="tech-item"><i class="fab fa-docker"></i><span>Docker</span></div>
+                <div class="tech-item"><i class="fab fa-linux"></i><span>Linux</span></div>
+                <div class="tech-item"><i class="fab fa-github"></i><span>GitHub</span></div>
+                <div class="tech-item"><i class="fas fa-server"></i><span>Server</span></div>
+                <div class="tech-item"><i class="fas fa-code"></i><span>PL/SQL</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="section experience-section">
+        <div class="container">
+            <h2 class="section-title">
+                <span class="title-bracket">&lt;</span>
+                Experience
+                <span class="title-bracket">/&gt;</span>
+            </h2>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker"><i class="fas fa-briefcase"></i></div>
+                    <div class="timeline-content">
+                        <div class="timeline-badge current">Current</div>
+                        <h3>System Engineer</h3>
+                        <h4><i class="fas fa-building"></i> B.A.R & Associates</h4>
+                        <p class="timeline-date"><i class="fas fa-calendar"></i> Jan 2025 - Present</p>
+                        <ul class="timeline-list">
+                            <li>Developing PL/SQL modules and Oracle Forms/Reports</li>
+                            <li>System maintenance and troubleshooting</li>
+                            <li>Managing MikroTik Router configurations</li>
+                            <li>Database optimization and performance tuning</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"><i class="fas fa-briefcase"></i></div>
+                    <div class="timeline-content">
+                        <h3>Jr. Software Engineer</h3>
+                        <h4><i class="fas fa-building"></i> Beta Solution</h4>
+                        <p class="timeline-date"><i class="fas fa-calendar"></i> Feb 2024 - Dec 2024</p>
+                        <ul class="timeline-list">
+                            <li>Developed Oracle APEX applications</li>
+                            <li>Wrote PL/SQL procedures and functions</li>
+                            <li>Created Oracle Forms and Reports</li>
+                            <li>Managed PostgreSQL and MSSQL databases</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"><i class="fas fa-certificate"></i></div>
+                    <div class="timeline-content">
+                        <h3>Post-Graduate Diploma in Oracle Database</h3>
+                        <h4><i class="fas fa-graduation-cap"></i> IsDB-BISEW</h4>
+                        <p class="timeline-date"><i class="fas fa-calendar"></i> 1 Year (1000 Hours)</p>
+                        <ul class="timeline-list">
+                            <li>Oracle Database Design & Development</li>
+                            <li>Oracle APEX Development</li>
+                            <li>PL/SQL Programming</li>
+                            <li>Oracle Forms & Reports Development</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="section education-section">
+        <div class="container">
+            <h2 class="section-title">
+                <span class="title-bracket">&lt;</span>
+                Education
+                <span class="title-bracket">/&gt;</span>
+            </h2>
+
+            <div class="education-grid">
+                <div class="education-card featured">
+                    <div class="card-glow"></div>
+                    <div class="card-icon"><i class="fas fa-university"></i></div>
+                    <div class="card-badge">2017 - 2020</div>
+                    <h3>BBA in Management</h3>
+                    <h4><i class="fas fa-graduation-cap"></i> Management Studies</h4>
+                    <p class="institution">Barishal BM College</p>
+                    <p class="location"><i class="fas fa-map-marker-alt"></i> Barishal, Bangladesh</p>
+                    <div class="card-corners">
+                        <span class="corner tl"></span>
+                        <span class="corner tr"></span>
+                        <span class="corner bl"></span>
+                        <span class="corner br"></span>
+                    </div>
+                </div>
+
+                <div class="education-card">
+                    <div class="card-icon"><i class="fas fa-school"></i></div>
+                    <div class="card-badge">2014 - 2016</div>
+                    <h3>Higher Secondary Certificate (HSC)</h3>
+                    <h4><i class="fas fa-book"></i> Humanities</h4>
+                    <p class="institution">Dhaka College</p>
+                </div>
+
+                <div class="education-card">
+                    <div class="card-icon"><i class="fas fa-school"></i></div>
+                    <div class="card-badge">2012 - 2014</div>
+                    <h3>Secondary School Certificate (SSC)</h3>
+                    <h4><i class="fas fa-book"></i> Humanities</h4>
+                    <p class="institution">Motijheel Model High School</p>
+                </div>
+            </div>
+
+            <!-- Training -->
+            <div class="certifications">
+                <h3 class="cert-title"><i class="fas fa-certificate"></i> Professional Training</h3>
+                <div class="cert-grid">
+                    <div class="cert-item"><i class="fas fa-database"></i><span>Oracle Database PGD (IsDB-BISEW)</span></div>
+                    <div class="cert-item"><i class="fas fa-code"></i><span>Oracle APEX Developer</span></div>
+                    <div class="cert-item"><i class="fab fa-docker"></i><span>Docker & DevOps</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section contact-section">
+        <div class="container">
+            <h2 class="section-title">
+                <span class="title-bracket">&lt;</span>
+                Contact Me
+                <span class="title-bracket">/&gt;</span>
+            </h2>
+
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-card">
+                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                        <div class="contact-details">
+                            <h4>Email</h4>
+                            <a href="mailto:sharifulislamshoeb@gmail.com">sharifulislamshoeb@gmail.com</a>
+                        </div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                        <div class="contact-details">
+                            <h4>Phone</h4>
+                            <a href="tel:+8801319899171">+880 1319-899171</a>
+                        </div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div class="contact-details">
+                            <h4>Location</h4>
+                            <p>Narayanganj, Bangladesh</p>
+                        </div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-icon"><i class="fab fa-github"></i></div>
+                        <div class="contact-details">
+                            <h4>GitHub</h4>
+                            <a href="https://github.com/shoeb-devops" target="_blank">github.com/shoeb-devops</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form-container">
+                    <form class="contact-form" id="contact-form">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" required placeholder=" ">
+                            <label for="name"><i class="fas fa-user"></i> Name</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" required placeholder=" ">
+                            <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="subject" name="subject" required placeholder=" ">
+                            <label for="subject"><i class="fas fa-tag"></i> Subject</label>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" rows="5" required placeholder=" "></textarea>
+                            <label for="message"><i class="fas fa-comment"></i> Message</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-submit">
+                            <i class="fas fa-paper-plane"></i>
+                            <span>SEND MESSAGE</span>
+                            <div class="btn-glitch"></div>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <span class="logo-bracket">&lt;</span>
+                    <span class="logo-text">SHOEB</span>
+                    <span class="logo-bracket">/&gt;</span>
+                </div>
+                <p class="footer-text">© 2025 Md Shariful Islam Shoeb. All rights reserved.</p>
+                <div class="footer-socials">
+                    <a href="https://github.com/shoeb-devops" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="mailto:sharifulislamshoeb@gmail.com"><i class="fas fa-envelope"></i></a>
+                    <a href="tel:+8801319899171"><i class="fas fa-phone"></i></a>
+                </div>
+            </div>
+            <div class="footer-binary">01001001 01010100 00100000 01010000 01010010 01001111</div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
