@@ -177,7 +177,7 @@ function animateCursor() {
 animateCursor();
 
 // Cursor hover effects
-const interactiveElements = document.querySelectorAll('a, button, .btn, .social-icon, .nav-link, .skill-category, .timeline-content, .education-card, .contact-card, .info-card, .tech-item');
+const interactiveElements = document.querySelectorAll('a, button, .btn, .social-icon, .nav-link, .skill-category, .timeline-content, .education-card, .contact-card, .info-card, .tech-item, .project-card, .proj-link-icon');
 
 interactiveElements.forEach(el => {
     el.addEventListener('mouseenter', () => {
@@ -331,7 +331,7 @@ skillBars.forEach(bar => {
 });
 
 // ===== Scroll Animations =====
-const animateElements = document.querySelectorAll('.skill-category, .timeline-item, .education-card, .contact-card, .info-card, .tech-item, .cert-item');
+const animateElements = document.querySelectorAll('.skill-category, .timeline-item, .education-card, .contact-card, .info-card, .tech-item, .cert-item, .project-card');
 
 const scrollObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry, index) => {
@@ -377,17 +377,41 @@ contactForm.addEventListener('submit', function(e) {
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>SENDING...</span>';
     btn.disabled = true;
     
-    setTimeout(() => {
-        btn.innerHTML = '<i class="fas fa-check"></i> <span>MESSAGE SENT!</span>';
-        btn.style.background = '#27c93f';
+    const formData = new FormData(contactForm);
+    
+    fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            btn.innerHTML = '<i class="fas fa-check"></i> <span>MESSAGE SENT!</span>';
+            btn.style.background = '#27c93f';
+            contactForm.reset();
+        } else {
+            btn.innerHTML = '<i class="fas fa-times"></i> <span>SEND ERROR</span>';
+            btn.style.background = '#ff3b30';
+            console.error('Web3Forms Error:', data);
+        }
         
         setTimeout(() => {
             btn.innerHTML = originalText;
             btn.style.background = '';
             btn.disabled = false;
-            contactForm.reset();
         }, 3000);
-    }, 2000);
+    })
+    .catch(error => {
+        btn.innerHTML = '<i class="fas fa-times"></i> <span>NETWORK ERROR</span>';
+        btn.style.background = '#ff3b30';
+        console.error('Submission Error:', error);
+        
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.style.background = '';
+            btn.disabled = false;
+        }, 3000);
+    });
 });
 
 // ===== Parallax Effect =====

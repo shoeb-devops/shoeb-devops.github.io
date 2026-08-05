@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Md Shariful Islam Shoeb - Resume</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', Calibri, 'Segoe UI', sans-serif;
+            color: #1f2937;
+            line-height: 1.4;
+            padding: 40px;
+            font-size: 10.5pt;
+            background: #ffffff;
+        }
+
+        a {
+            color: #0284c7;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Layout */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #0284c7;
+            padding-bottom: 15px;
+        }
+        
+        .header-left h1 {
+            font-size: 24pt;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+        }
+        
+        .header-left .title {
+            font-size: 12.5pt;
+            font-weight: 600;
+            color: #0284c7;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+        
+        .header-left .contact-info {
+            font-size: 9pt;
+            color: #4b5563;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header-left .contact-info span {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .header-left .contact-info span:not(:last-child)::after {
+            content: "•";
+            margin-left: 10px;
+            color: #cbd5e1;
+        }
+        
+        .profile-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 6px;
+            object-fit: cover;
+            border: 1px solid #e2e8f0;
+        }
+        
+        /* Section Styles */
+        section {
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 12pt;
+            font-weight: 700;
+            color: #0f172a;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            border-bottom: 1.5px solid #e2e8f0;
+            padding-bottom: 3px;
+        }
+        
+        /* Summary */
+        .summary-text {
+            text-align: justify;
+            font-size: 10pt;
+            color: #374151;
+        }
+        
+        /* Experience */
+        .job {
+            margin-bottom: 12px;
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 4px;
+            font-size: 10.5pt;
+        }
+
+        .company {
+            color: #0284c7;
+        }
+
+        .dates {
+            font-weight: 400;
+            color: #6b7280;
+            font-size: 9.5pt;
+        }
+        
+        .bullets {
+            list-style-type: square;
+            margin-left: 18px;
+            font-size: 9.5pt;
+            color: #374151;
+        }
+
+        .bullets li {
+            margin-bottom: 3px;
+        }
+
+        .bullets strong {
+            color: #111827;
+        }
+        
+        /* Core Skills Grid */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px 20px;
+            font-size: 9.5pt;
+            color: #374151;
+        }
+
+        .skill-group strong {
+            color: #0f172a;
+        }
+        
+        /* Achievements */
+        .achievements-list {
+            list-style-type: square;
+            margin-left: 18px;
+            font-size: 9.5pt;
+            color: #374151;
+        }
+
+        .achievements-list li {
+            margin-bottom: 3px;
+        }
+        
+        /* Projects */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .project-item {
+            border: 1px solid #e2e8f0;
+            padding: 10px;
+            border-radius: 4px;
+            background: #f8fafc;
+        }
+
+        .project-name {
+            font-weight: 600;
+            color: #0f172a;
+            font-size: 10pt;
+            margin-bottom: 2px;
+        }
+
+        .project-meta {
+            font-size: 8pt;
+            color: #0284c7;
+            font-family: monospace;
+            margin-bottom: 4px;
+        }
+
+        .project-desc {
+            font-size: 9pt;
+            color: #4b5563;
+        }
+        
+        /* Training & Education */
+        .edu-training-container {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 20px;
+        }
+
+        .edu-item, .training-item {
+            margin-bottom: 8px;
+            font-size: 9.5pt;
+        }
+
+        .edu-title, .training-title {
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .edu-inst, .training-inst {
+            color: #4b5563;
+            font-size: 9pt;
+        }
+
+        .edu-grade, .training-meta {
+            color: #6b7280;
+            font-size: 8.5pt;
+        }
+        
+        /* Page breaks for print */
+        @media print {
+            body {
+                padding: 20px;
+                font-size: 10pt;
+            }
+            .page-break {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Page 1 -->
+    <div class="header">
+        <div class="header-left">
+            <h1>Md Shariful Islam Shoeb</h1>
+            <div class="title">System Engineer | Linux Administrator | Infrastructure Engineer</div>
+            <div class="contact-info">
+                <span>sharifulislamshoeb@gmail.com</span>
+                <span>+880 1319-899171</span>
+                <span>Dhaka, Bangladesh</span>
+                <span><a href="https://github.com/shoeb-devops" target="_blank">github.com/shoeb-devops</a></span>
+                <span><a href="https://linkedin.com/in/mdsharifulislamshoeb" target="_blank">linkedin.com/in/mdsharifulislamshoeb</a></span>
+            </div>
+        </div>
+        <img src="profile.jpeg" alt="Profile Image" class="profile-img">
+    </div>
+
+    <section>
+        <div class="section-title">Professional Summary</div>
+        <p class="summary-text">
+            System Engineer with 2+ years of experience managing enterprise Linux infrastructure, virtualization, distributed storage, hosting automation, and production server environments. Experienced in deploying highly available Proxmox VE clusters with Ceph, securing enterprise networks using OPNsense, MikroTik, Cloudflare, and automating infrastructure using Docker, GitHub Actions, and Bash scripting. Passionate about building reliable, secure, and scalable infrastructure.
+        </p>
+    </section>
+
+    <section>
+        <div class="section-title">Employment History</div>
+        
+        <div class="job">
+            <div class="job-header">
+                <span>System Engineer | <span class="company">B.A.R & Associates (Software Company)</span></span>
+                <span class="dates">January 2025 – Present</span>
+            </div>
+            <ul class="bullets">
+                <li><strong>Designed and maintained</strong> highly available Proxmox VE clusters with Ceph distributed storage supporting production workloads.</li>
+                <li><strong>Automated VPS provisioning</strong> using WHMCS and Virtualizor, reducing manual deployment time by 70%.</li>
+                <li><strong>Performed Linux kernel tuning</strong>, system optimization, and troubleshooting across Ubuntu, RHEL, and Windows Server environments.</li>
+                <li><strong>Hardened network and server-level security</strong> by implementing OPNsense (Transparent Bridges), Fail2Ban, MikroTik routing, Cloudflare, and custom firewall rules.</li>
+                <li><strong>Streamlined application deployment</strong> by containerizing applications with Docker and establishing automated GitHub Actions CI/CD pipelines.</li>
+                <li><strong>Administered databases</strong> including Oracle DB, PostgreSQL, and MSSQL, optimizing query performance and executing disaster recovery drills.</li>
+            </ul>
+        </div>
+
+        <div class="job">
+            <div class="job-header">
+                <span>Junior Software Engineer | <span class="company">Beta Solution (Software Company)</span></span>
+                <span class="dates">February 2024 – December 2024</span>
+            </div>
+            <ul class="bullets">
+                <li><strong>Developed and optimized</strong> custom enterprise Oracle APEX applications and Oracle Forms/Reports, improving data processing and report generation times.</li>
+                <li><strong>Built efficient database logic</strong> using optimized PL/SQL stored procedures, triggers, and functions to speed up query execution.</li>
+                <li><strong>Managed production server configurations</strong>, domain routing, and SSL installations to ensure secure, high-uptime project deployments.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-title">Key Achievements</div>
+        <ul class="achievements-list">
+            <li><strong>Built a 5-node Proxmox HA Cluster</strong> with Ceph distributed storage replication for critical production workloads.</li>
+            <li><strong>Reduced deployment time by 70%</strong> through full WHMCS and Virtualizor hosting workflow automation.</li>
+            <li><strong>Managed 100+ production servers</strong> maintaining a 99.9% infrastructure uptime record.</li>
+            <li><strong>Optimized database query speeds</strong> by up to 40% through PL/SQL index tuning and query refactoring.</li>
+        </ul>
+    </section>
+
+    <!-- Page Break for Printing -->
+    <div class="page-break"></div>
+
+    <section style="margin-top: 20px;">
+        <div class="section-title">Core Technical Skills</div>
+        <div class="skills-container">
+            <div class="skill-group">
+                <strong>Infrastructure & Virtualization:</strong> Proxmox VE, VMware, Virtualizor (KVM), TrueNAS, HA, Cluster Management, Linux Administration
+            </div>
+            <div class="skill-group">
+                <strong>Storage Administration:</strong> Ceph Storage, ZFS, LVM, RAID, iSCSI, NFS, SMB, Snapshot Management, Backup & Recovery
+            </div>
+            <div class="skill-group">
+                <strong>Networking & Security:</strong> OPNsense, MikroTik Routing, DNS, DHCP, VLAN, HAProxy, Load Balancing, Cloudflare, VPN, Twingate, Active Directory
+            </div>
+            <div class="skill-group">
+                <strong>DevOps & Automation:</strong> Docker, Kubernetes (Basic), Git, GitHub Actions, CI/CD, Infrastructure Automation, Bash Scripting, Python, PowerShell
+            </div>
+            <div class="skill-group">
+                <strong>Hosting Automation:</strong> WHMCS, cPanel/WHM, Plesk, CyberPanel, HestiaCP, Domain & DNS Hosting Management
+            </div>
+            <div class="skill-group">
+                <strong>Databases:</strong> Oracle DB, APEX, PostgreSQL, MySQL, MariaDB, MSSQL, PL/SQL, Database Design, SQL Tuning
+            </div>
+            <div class="skill-group">
+                <strong>Web Stack:</strong> Apache, Nginx, LiteSpeed/OpenLiteSpeed, PHP-FPM, Redis
+            </div>
+            <div class="skill-group">
+                <strong>Monitoring & Observability:</strong> Zabbix, Grafana, Uptime Monitoring, Log Analysis
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-title">Key Projects</div>
+        <div class="project-grid">
+            <div class="project-item">
+                <div class="project-name">Enterprise Proxmox HA Cluster</div>
+                <div class="project-meta">Proxmox VE • Ceph • Debian Linux</div>
+                <p class="project-desc">Deployed and managed a highly available 5-node virtualized environment. Configured Ceph distributed storage pools with active replication to achieve zero single points of failure (SPOF) and support seamless live migration of running workloads.</p>
+            </div>
+            <div class="project-item">
+                <div class="project-name">OPNsense Transparent Firewall</div>
+                <div class="project-meta">OPNsense • MikroTik • HAProxy • VLANs • IDS/IPS</div>
+                <p class="project-desc">Hardened enterprise network perimeter by designing a Layer-2 transparent bridge firewall with active IDS/IPS. Integrated MikroTik router for VLAN division, traffic shaping, and HAProxy for secure external load balancing.</p>
+            </div>
+            <div class="project-item">
+                <div class="project-name">WHMCS & Virtualizor Hosting Automation</div>
+                <div class="project-meta">WHMCS • Virtualizor • KVM • SSL/TLS Certificates</div>
+                <p class="project-desc">Automated the end-to-end VPS provisioning flow, provisioning VMs dynamically in a KVM environment via WHMCS billing hooks. Programmed automatic routing, DNS setup, and Let's Encrypt SSL generation.</p>
+            </div>
+            <div class="project-item">
+                <div class="project-name">Centralized Observability Stack</div>
+                <div class="project-meta">Zabbix • Grafana • Bash • Webhooks</div>
+                <p class="project-desc">Configured comprehensive resource tracking for 100+ servers and relational databases using Zabbix agent metrics. Integrated Grafana dashboards to monitor latency, IOPS, and memory usage, routing critical alerts through Telegram webhooks.</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-title">Training & Education</div>
+        <div class="edu-training-container">
+            <div>
+                <div class="training-title" style="font-weight:700; color:#0f172a; margin-bottom: 2px;">Professional Training</div>
+                <div class="training-item">
+                    <div class="training-title">Post-Graduate Diploma in Oracle Database Design & Development</div>
+                    <div class="training-inst">IsDB-BISEW (Islamic Development Bank – BISEW), Dhaka</div>
+                    <div class="training-meta">Duration: 1 Year (1,000 Hours intensive hands-on lab training)</div>
+                </div>
+            </div>
+            
+            <div>
+                <div class="edu-title" style="font-weight:700; color:#0f172a; margin-bottom: 2px;">Education</div>
+                <div class="edu-item">
+                    <div class="edu-title">BBA in Management</div>
+                    <div class="edu-inst">Barishal BM College (2020)</div>
+                    <div class="edu-grade">CGPA: 2.6 / 4.0</div>
+                </div>
+                <div class="edu-item">
+                    <div class="edu-title">HSC (Business Studies)</div>
+                    <div class="edu-inst">Dhaka College (2016) | GPA: 4.25 / 5.00</div>
+                </div>
+                <div class="edu-item">
+                    <div class="edu-title">SSC (Business Studies)</div>
+                    <div class="edu-inst">Motijheel Model School & College (2014) | GPA: 5.00 / 5.00</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-title">References</div>
+        <p style="font-size: 9.5pt; color: #4b5563;">References available upon request.</p>
+    </section>
+
+</body>
+</html>
