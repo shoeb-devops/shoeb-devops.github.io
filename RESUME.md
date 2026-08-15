@@ -1,98 +1,86 @@
-# Md Shariful Islam Shoeb
-**System Engineer | Linux Administrator | Infrastructure Engineer**  
-Dhaka, Bangladesh | +880 1319-899171 | [sharifulislamshoeb@gmail.com](mailto:sharifulislamshoeb@gmail.com)  
-[GitHub](https://github.com/shoeb-devops) | [LinkedIn](https://linkedin.com/in/mdsharifulislamshoeb)
+# MD SHARIFUL ISLAM SHOEB
+**Full-Stack Developer | Database Developer | System Engineer**  
+✉ sharifulislamshoeb@gmail.com | ☎ +88 01319899171  
+⌂ [github.com/shoeb-devops](https://github.com/shoeb-devops) | [linkedin.com/in/shariful-islam-shoeb](https://linkedin.com/in/shariful-islam-shoeb)  
+[shoeb-devops.github.io](https://shoeb-devops.github.io) | Mugdapara, Dhaka-1214, Bangladesh
 
 ---
 
-## Professional Summary
-System Engineer with 2+ years of experience managing enterprise Linux infrastructure, virtualization, distributed storage, hosting automation, and production server environments. Experienced in deploying highly available Proxmox VE clusters with Ceph, securing enterprise networks using OPNsense, MikroTik, Cloudflare, and automating infrastructure using Docker, GitHub Actions, and Bash scripting. Passionate about building reliable, secure, and scalable infrastructure.
+## CAREER OBJECTIVE
+Results-driven Full-Stack Developer, Database Developer, and System Engineer with expertise in building database-driven web applications using PHP, Laravel, and REST APIs, alongside deep Linux internals, high-availability Proxmox VE clusters, Ceph distributed storage, and enterprise hosting infrastructure. Experienced in managing production environments across WHMCS, Virtualizor, cPanel, Plesk, and standalone Linux systems without relying solely on control panel abstractions. Skilled in infrastructure security, automation, virtualization, and scalable hosting operations with a strong focus on uptime, performance, and reliability.
 
 ---
 
-## Employment History
+## EMPLOYMENT HISTORY
 
-### **System Engineer** | B.A.R & Associates (Software Company)
-*January 2025 – Present | Dhaka, Bangladesh*
-* **Designed and maintained** highly available Proxmox VE clusters with Ceph distributed storage supporting production workloads.
-* **Automated VPS provisioning** using WHMCS and Virtualizor, reducing manual deployment time by 70%.
-* **Performed Linux kernel tuning**, system optimization, and troubleshooting across Ubuntu, RHEL, and Windows Server environments.
-* **Hardened network and server-level security** by implementing OPNsense (Transparent Bridges), Fail2Ban, MikroTik routing, Cloudflare, and custom firewall rules.
-* **Streamlined application deployment** by containerizing applications with Docker and establishing automated GitHub Actions CI/CD pipelines.
-* **Administered databases** including Oracle DB, PostgreSQL, and MSSQL, optimizing query performance and executing disaster recovery drills.
+### **System Engineer** | B.A.R & Associates – Software Company
+*January 2025 – Present*
+* **Infrastructure & Clustering:** Deploying and managing Proxmox VE multi-node enterprise clusters with Ceph distributed storage pools, ensuring high availability and zero single point of failure.
+* **Hosting Automation & Billing:** Configuring and maintaining WHMCS workflows, Virtualizor KVM management, and full-stack environments across cPanel/WHM, Plesk, HestiaCP, and CyberPanel.
+* **Linux Internals & Administration:** Performance tuning, kernel-level troubleshooting, and bare-metal management on Red Hat, Ubuntu, and Windows Server 2022 without control panel dependencies.
+* **Security Hardening:** Implementing proactive network and server-level firewalls using OPNsense, Fail2Ban, MikroTik, Cloudflare, and custom CSF/iptables rules.
+* **DevOps & Automation:** Building automated deployment pipelines via GitHub Actions and containerizing applications using Docker.
+* **Database Administration:** Managing backup, recovery drills, and performance tuning for Oracle DB, MSSQL, and PostgreSQL.
+* **Full-Stack Development:** Building and maintaining backend applications and REST APIs using PHP, Laravel, and JavaScript for internal and client-facing systems.
 
-### **Junior Software Engineer** | Beta Solution (Software Company)
-*February 2024 – December 2024 | Dhaka, Bangladesh*
-* **Developed and optimized** custom enterprise Oracle APEX applications and Oracle Forms/Reports, improving data processing and report generation times.
-* **Built efficient database logic** using optimized PL/SQL stored procedures, triggers, and functions to speed up query execution.
-* **Managed production server configurations**, domain routing, and SSL installations to ensure secure, high-uptime project deployments.
-
----
-
-## Key Achievements
-* **Built a 5-node Proxmox HA Cluster** with Ceph distributed storage replication for critical production workloads.
-* **Reduced deployment time by 70%** through full WHMCS and Virtualizor hosting workflow automation.
-* **Managed 100+ production servers** maintaining a 99.9% infrastructure uptime record.
-* **Optimized database query speeds** by up to 40% through PL/SQL index tuning and query refactoring.
+### **Junior Software Engineer** | Beta Solution – Software Company
+*February 2024 – December 2024*
+* Developed custom Oracle APEX applications and generated enterprise Oracle Forms/Reports.
+* Optimized back-end logic using PL/SQL stored procedures, triggers, and functions.
+* Managed server configurations and domain routing for secure project deployments.
 
 ---
 
-## Core Technical Skills
+## CORE TECHNICAL SKILLS
 
-* **Infrastructure & Virtualization:** Proxmox VE Clusters, VMware ESXi, Virtualizor (KVM), TrueNAS, High Availability (HA), Cluster Management, Linux Administration.
-* **Storage Administration:** Ceph Distributed Storage, ZFS, LVM, RAID, iSCSI, NFS, SMB, Snapshot Management, Backup & Recovery.
-* **Networking & Security:** OPNsense (Firewalls/Bridges), MikroTik Routing, DNS, DHCP, VLAN, HAProxy, Load Balancing, Cloudflare, VPN, Twingate, Active Directory.
-* **DevOps & Automation:** Docker, Kubernetes (Basic), Git, GitHub Actions, CI/CD, Infrastructure Automation, Bash Scripting, Python, PowerShell.
-* **Hosting Automation:** WHMCS, cPanel/WHM, Plesk, CyberPanel, HestiaCP, Domain & DNS Hosting Management.
-* **Databases:** Oracle DB (APEX, Forms & Reports), PostgreSQL, MySQL, MariaDB, MSSQL Server, PL/SQL, Database Design, SQL Tuning & Optimization.
-* **Web Stack:** Apache, Nginx, LiteSpeed/OpenLiteSpeed, PHP-FPM, Redis.
-* **Monitoring & Observability:** Zabbix, Grafana, Uptime Monitoring, Log Analysis.
-
----
-
-## Key Projects
-
-### **Enterprise Proxmox HA Cluster**
-* **Role:** System Engineer / Infrastructure Designer
-* **Stack:** Proxmox VE, Ceph, Debian Linux
-* **Details:** Deployed and managed a highly available 5-node virtualized environment. Configured Ceph distributed storage pools with active replication to achieve zero single points of failure (SPOF) and support seamless live migration of running workloads.
-
-### **OPNsense Transparent Firewall & Secure Networking**
-* **Role:** Network Administrator
-* **Stack:** OPNsense, MikroTik, HAProxy, VLANs, IDS/IPS
-* **Details:** Hardened enterprise network perimeter by designing a Layer-2 transparent bridge firewall with active IDS/IPS. Integrated MikroTik router for VLAN division, traffic shaping, and HAProxy for secure external load balancing.
-
-### **WHMCS & Virtualizor Web Hosting Automation**
-* **Role:** Operations Automation Engineer
-* **Stack:** WHMCS, Virtualizor, KVM, SSL/TLS Certificates
-* **Details:** Automated the end-to-end VPS provisioning flow, provisioning VMs dynamically in a KVM environment via WHMCS billing hooks. Programmed automatic routing, DNS setup, and Let's Encrypt SSL generation.
-
-### **Centralized Observability & Monitoring Stack**
-* **Role:** Monitoring Engineer
-* **Stack:** Zabbix, Grafana, Bash, Webhooks
-* **Details:** Configured comprehensive resource tracking for 100+ servers and relational databases using Zabbix agent metrics. Integrated Grafana dashboards to monitor latency, IOPS, and memory usage, routing critical alerts through Telegram webhooks.
+* **Full-Stack Development:** PHP · Laravel · JavaScript · HTML5/CSS3 · REST API · Backend Development · Git/GitHub
+* **Virtualisation & Storage:** Proxmox VE Clusters · Ceph Distributed Storage · VMware · Virtualizor (KVM) · TrueNAS
+* **Hosting & Automation:** WHMCS · cPanel/WHM · Plesk · CyberPanel · HestiaCP · Domain Hosting Management
+* **AI & DevOps:** Vibe Coding (Cursor IDE) · Git · GitHub Actions (CI/CD) · Docker · Kubernetes (Basic)
+* **Networking & Security:** OPNsense · MikroTik Routing · SSL/TLS Chain Management · Cloudflare · Twingate · Active Directory
+* **Databases:** Oracle DB (APEX, Forms/Reports) · PostgreSQL · MySQL · MariaDB · MSSQL Server
+* **Languages & Scripting:** PL/SQL · Bash · Python · PowerShell · SQL · PHP/Laravel · JavaScript
+* **Hosting & Web Stack:** Apache · Nginx · LiteSpeed/OpenLiteSpeed · PHP-FPM · Redis · WHMCS · cPanel · Plesk
+* **Monitoring & Observability:** Zabbix · Grafana · Uptime Monitoring · Log Analysis
+* **Storage & Backup:** ZFS · Ceph · LVM · Snapshot Management · Backup & Recovery
 
 ---
 
-## Professional Training
+## PROFESSIONAL TRAINING
 
 ### **Post-Graduate Diploma in Oracle Database Design & Development**
-*IsDB-BISEW (Islamic Development Bank – BISEW), Dhaka*
-* **Duration:** 1 Year (1,000 Hours intensive hands-on lab training)
-* **Core Areas:** Oracle Database Design, PL/SQL Programming, Oracle APEX Development, Oracle Forms & Reports.
+*IsDB-BISEW (Islamic Development Bank – BISEW), Agargaon, Dhaka*  
+*Duration: 1 Year (1,000 Hours Intensive Hands-on Laboratory Training)*
 
 ---
 
-## Education
+## EDUCATION
 
 * **BBA in Management** | Barishal BM College (2020)  
   *CGPA: 2.6 / 4.0*
-* **HSC (Business Studies)** | Dhaka College (2016)  
+* **HSC – Business Studies** | Dhaka College (2016)  
   *GPA: 4.25 / 5.00*
-* **SSC (Business Studies)** | Motijheel Model School & College (2014)  
+* **SSC – Business Studies** | Motijheel Model School & College (2014)  
   *GPA: 5.00 / 5.00*
 
 ---
 
-## References
-References available upon request.
+## PERSONAL INFORMATION
+
+* **Date of Birth:** 5 December 1999
+* **Nationality:** Bangladeshi
+* **Blood Group:** AB+
+* **NID Number:** 9163945208
+* **Marital Status:** Married
+
+---
+
+## REFERENCES
+
+**S.M. Saifuddin Shiblu**  
+Consultant – IsDB-BISEW IT Scholarship Program  
+Phone: 01816246051 | Email: shibluctgbd96@gmail.com  
+
+**Zakia Sultana**  
+Sr. Lecturer – IBCS-Primax Software (Bangladesh) Ltd.  
+Phone: 01712272140 | Email: zssultana@gmail.com  
