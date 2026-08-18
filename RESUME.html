@@ -245,8 +245,7 @@
         
         /* Page breaks for print */
         @page {
-            size: A4;
-            margin: 12mm 15mm;
+            margin: 10mm 12mm;
         }
         @media print {
             body {
@@ -259,15 +258,17 @@
                 clear: both;
             }
             section {
+                margin-bottom: 12px;
+            }
+            .job, .edu-item, .training-item, .reference-card, .personal-info-table {
                 break-inside: avoid;
-                margin-bottom: 15px;
             }
             .bullets li, .skill-item-row {
                 font-size: 9pt;
             }
             .header {
-                margin-bottom: 15px;
-                padding-bottom: 10px;
+                margin-bottom: 12px;
+                padding-bottom: 8px;
             }
         }
     </style>
