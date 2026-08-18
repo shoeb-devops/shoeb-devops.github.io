@@ -7,7 +7,7 @@
 ---
 
 ## CAREER OBJECTIVE
-Results-driven Full-Stack Developer, Database Developer, and System Engineer with expertise in building database-driven web applications using PHP, Laravel, and REST APIs, alongside deep Linux internals, high-availability Proxmox VE clusters, Ceph distributed storage, and enterprise hosting infrastructure. Experienced in managing production environments across WHMCS, Virtualizor, cPanel, Plesk, and standalone Linux systems without relying solely on control panel abstractions. Skilled in infrastructure security, automation, virtualization, and scalable hosting operations with a strong focus on uptime, performance, and reliability.
+Results-driven Full-Stack Developer, Database Developer, and System Engineer with 3+ years of experience in building database-driven web applications using PHP, Laravel, and REST APIs, alongside deep Linux internals, high-availability Proxmox VE clusters, Ceph distributed storage, and enterprise hosting infrastructure. Experienced in managing production environments across WHMCS, Virtualizor, cPanel, Plesk, and standalone Linux systems without relying solely on control panel abstractions. Skilled in infrastructure security, automation, virtualization, and scalable hosting operations with a strong focus on uptime, performance, and reliability.
 
 ---
 
@@ -28,6 +28,15 @@ Results-driven Full-Stack Developer, Database Developer, and System Engineer wit
 * Developed custom Oracle APEX applications and generated enterprise Oracle Forms/Reports.
 * Optimized back-end logic using PL/SQL stored procedures, triggers, and functions.
 * Managed server configurations and domain routing for secure project deployments.
+
+---
+
+## SELECTED PROJECTS
+
+* **NBR VAT Management System:** Developed and deployed a secure, compliant VAT management web application. Maintained high-concurrency database queries, tax calculations, transaction logging, and secure NBR reporting.
+* **DevOps Deployment Pipelines (Multi-Web App Hosting):** Configured CI/CD automation pipelines to containerize and deploy Furniture E-Commerce, Inventory Management, and Education Management websites. Handled server setup, auto-backups, and zero-downtime upgrades.
+* **Enterprise Proxmox HA Cluster:** Designed a highly available 5-node virtualized environment using Proxmox VE. Integrated Ceph distributed storage replication for seamless live migrations and zero single points of failure.
+* **OPNsense Transparent Firewall & Observability:** Implemented perimeter network security via OPNsense layer-2 bridge with IDS/IPS threat monitoring, combined with a centralized Zabbix & Grafana tracking dashboard.
 
 ---
 
