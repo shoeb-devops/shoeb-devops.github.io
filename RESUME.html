@@ -244,13 +244,30 @@
         }
         
         /* Page breaks for print */
+        @page {
+            size: A4;
+            margin: 12mm 15mm;
+        }
         @media print {
             body {
-                padding: 30px;
-                font-size: 10pt;
+                padding: 0;
+                font-size: 9.5pt;
+                line-height: 1.35;
             }
             .page-break {
                 page-break-before: always;
+                clear: both;
+            }
+            section {
+                break-inside: avoid;
+                margin-bottom: 15px;
+            }
+            .bullets li, .skill-item-row {
+                font-size: 9pt;
+            }
+            .header {
+                margin-bottom: 15px;
+                padding-bottom: 10px;
             }
         }
     </style>
@@ -314,6 +331,9 @@
         </div>
     </section>
 
+    <!-- Page Break for Printing -->
+    <div class="page-break"></div>
+
     <section>
         <div class="section-title">Core Technical Skills</div>
         <div class="skills-list-block">
@@ -322,20 +342,21 @@
             <div class="skill-item-row"><strong>Hosting & Automation:</strong> WHMCS · cPanel/WHM · Plesk · CyberPanel · HestiaCP · Domain Hosting Management</div>
             <div class="skill-item-row"><strong>AI & DevOps:</strong> Vibe Coding (Cursor IDE) · Git · GitHub Actions (CI/CD) · Docker · Kubernetes (Basic)</div>
             <div class="skill-item-row"><strong>Networking & Security:</strong> OPNsense · MikroTik Routing · SSL/TLS Chain Management · Cloudflare · Twingate · Active Directory</div>
-            <div class="skill-item-row"><strong>Databases:</strong> Oracle DB (APEX, Forms/Reports) · PostgreSQL · MySQL · MariaDB · MSSQL Server</div>
+            <div class="skill-item-row"><strong>Databases:</strong> Oracle DB (APEX, Forms/Reports) · PostgreSQL · PostgreSQL · MySQL · MariaDB · MSSQL Server</div>
             <div class="skill-item-row"><strong>Languages & Scripting:</strong> PL/SQL · Bash · Python · PowerShell · SQL · PHP/Laravel · JavaScript</div>
-        </div>
-    </section>
-
-    <!-- Page Break for Printing -->
-    <div class="page-break"></div>
-
-    <section style="margin-top: 20px;">
-        <div class="section-title">Core Technical Skills (Continued)</div>
-        <div class="skills-list-block">
             <div class="skill-item-row"><strong>Hosting & Web Stack:</strong> Apache · Nginx · LiteSpeed/OpenLiteSpeed · PHP-FPM · Redis · WHMCS · cPanel · Plesk</div>
             <div class="skill-item-row"><strong>Monitoring & Observability:</strong> Zabbix · Grafana · Uptime Monitoring · Log Analysis</div>
             <div class="skill-item-row"><strong>Storage & Backup:</strong> ZFS · Ceph · LVM · Snapshot Management · Backup & Recovery</div>
+        </div>
+    </section>
+
+    <section>
+        <div class="section-title">Selected Projects</div>
+        <div class="skills-list-block" style="font-size: 9pt;">
+            <div class="skill-item-row" style="margin-bottom: 8px;"><strong>NBR VAT Management System:</strong> Developed and deployed a secure, compliant VAT management web application. Maintained high-concurrency database queries, tax calculations, transaction logging, and secure NBR reporting.</div>
+            <div class="skill-item-row" style="margin-bottom: 8px;"><strong>DevOps Deployment Pipelines (Multi-Web App Hosting):</strong> Configured CI/CD automation pipelines to containerize and deploy Furniture E-Commerce, Inventory Management, and Education Management websites. Handled server setup, auto-backups, and zero-downtime upgrades.</div>
+            <div class="skill-item-row" style="margin-bottom: 8px;"><strong>Enterprise Proxmox HA Cluster:</strong> Designed a highly available 5-node virtualized environment using Proxmox VE. Integrated Ceph distributed storage replication for seamless live migrations and zero single points of failure.</div>
+            <div class="skill-item-row" style="margin-bottom: 8px;"><strong>OPNsense Transparent Firewall & Observability:</strong> Implemented perimeter network security via OPNsense layer-2 bridge with IDS/IPS threat monitoring, combined with a centralized Zabbix & Grafana tracking dashboard.</div>
         </div>
     </section>
 
