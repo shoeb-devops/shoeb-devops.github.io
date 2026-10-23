@@ -802,6 +802,7 @@
             },
 
             init() {
+                window.solarApp = this;
                 this.updateDate();
                 // Small delay to ensure DOM is ready for Chart.js
                 this.$nextTick(() => {
