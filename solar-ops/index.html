@@ -836,8 +836,12 @@
                 this.updateDate();
                 try {
                     const urlParams = new URLSearchParams(window.location.search);
-                    if (urlParams.get('tab') === 'bsrea' || urlParams.get('verify')) {
+                    const vCode = urlParams.get('verify');
+                    if (urlParams.get('tab') === 'bsrea' || vCode) {
                         this.currentPage = 'bsrea';
+                        if (vCode && window.SolarOpsPages) {
+                            window.SolarOpsPages.bsreaActiveTab = 'verify';
+                        }
                     }
                 } catch(e){}
                 // Small delay to ensure DOM is ready for Chart.js

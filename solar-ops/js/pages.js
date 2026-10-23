@@ -1893,7 +1893,15 @@ window.SolarOpsPages = {
     renderBsreaPortal: function() {
         const members = SolarOpsPages.getBsreaMembers();
         const nocs = SolarOpsPages.getBsreaNocs();
-        const activeTab = SolarOpsPages.bsreaActiveTab || 'members';
+        let activeTab = SolarOpsPages.bsreaActiveTab || 'members';
+        let queryVerify = '';
+        try {
+            const p = new URLSearchParams(window.location.search);
+            queryVerify = p.get('verify') || '';
+            if (queryVerify) {
+                activeTab = 'verify';
+            }
+        } catch(e){}
 
         const membersRows = members.map(m => `
             <tr class="hover:bg-slate-50 transition">
@@ -2102,7 +2110,7 @@ window.SolarOpsPages = {
                     </div>
 
                     <div class="flex gap-2 max-w-lg mx-auto">
-                        <input id="bsrea-verify-input" type="text" value="BSREA/MEM/2026/012"
+                        <input id="bsrea-verify-input" type="text" value="${queryVerify || 'BSREA/MEM/2026/012'}"
                                placeholder="Enter Certificate No (e.g. BSREA/MEM/2026/012)"
                                class="flex-1 px-4 py-2.5 border border-slate-300 rounded-xl text-xs font-mono font-semibold focus:ring-2 focus:ring-emerald-500" />
                         <button onclick="SolarOpsPages.verifyBsreaRecord()"
@@ -2120,26 +2128,86 @@ window.SolarOpsPages = {
 
                     <!-- Live Verification Output Container -->
                     <div id="bsrea-verify-result" class="pt-3 text-left">
-                        <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-300 space-y-2 text-xs">
-                            <div class="flex items-center justify-between">
-                                <span class="px-2.5 py-0.5 rounded-full font-bold bg-emerald-600 text-white text-[11px] flex items-center gap-1">
-                                    <i class="fa-solid fa-circle-check"></i> AUTHENTIC &amp; VALID RECORD
-                                </span>
-                                <span class="text-slate-400 font-mono text-[10px]">Active in Secretariat Database</span>
+                        ${queryVerify ? (function(){
+                            const q = queryVerify.trim();
+                            const foundMember = members.find(m => m.regNo.toLowerCase().includes(q.toLowerCase()) || m.name.toLowerCase().includes(q.toLowerCase()));
+                            const foundNoc = nocs.find(n => n.nocNo.toLowerCase().includes(q.toLowerCase()) || n.applicant.toLowerCase().includes(q.toLowerCase()));
+                            if (foundMember) {
+                                return `
+                                    <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-300 space-y-2 animate-fade-in text-xs">
+                                        <div class="flex items-center justify-between">
+                                            <span class="px-2.5 py-0.5 rounded-full font-bold bg-emerald-600 text-white text-[11px] flex items-center gap-1">
+                                                <i class="fa-solid fa-circle-check"></i> AUTHENTIC & VALID RECORD
+                                            </span>
+                                            <span class="text-slate-400 font-mono text-[10px]">Verified: Just now</span>
+                                        </div>
+                                        <h4 class="font-bold text-slate-900 text-sm mt-1">${foundMember.name}</h4>
+                                        <div class="grid grid-cols-2 gap-2 text-slate-700 pt-1 border-t border-emerald-200">
+                                            <div><span class="text-slate-400 block">Registration No:</span><strong class="font-mono text-emerald-800">${foundMember.regNo}</strong></div>
+                                            <div><span class="text-slate-400 block">Category:</span><strong>${foundMember.category}</strong></div>
+                                            <div><span class="text-slate-400 block">SREDA License:</span><strong>${foundMember.sredaReg}</strong></div>
+                                            <div><span class="text-slate-400 block">Validity:</span><strong class="text-emerald-700">${foundMember.validUntil} (Active)</strong></div>
+                                        </div>
+                                        <div class="pt-2 flex justify-end">
+                                            <button onclick="SolarOpsPages.openBsreaCertificate('${foundMember.id}')" class="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-semibold hover:bg-emerald-700 cursor-pointer">
+                                                View Official Certificate (QR) →
+                                            </button>
+                                        </div>
+                                    </div>
+                                `;
+                            } else if (foundNoc) {
+                                return `
+                                    <div class="p-4 bg-blue-50 rounded-xl border border-blue-300 space-y-2 animate-fade-in text-xs">
+                                        <div class="flex items-center justify-between">
+                                            <span class="px-2.5 py-0.5 rounded-full font-bold bg-blue-600 text-white text-[11px] flex items-center gap-1">
+                                                <i class="fa-solid fa-circle-check"></i> OFFICIAL NOC VERIFIED
+                                            </span>
+                                            <span class="text-slate-400 font-mono text-[10px]">Verified: Just now</span>
+                                        </div>
+                                        <h4 class="font-bold text-slate-900 text-sm mt-1">${foundNoc.applicant}</h4>
+                                        <div class="space-y-1 text-slate-700 pt-1 border-t border-blue-200">
+                                            <div><span class="text-slate-400">NOC Number:</span> <strong class="font-mono text-blue-800">${foundNoc.nocNo}</strong></div>
+                                            <div><span class="text-slate-400">Consignment:</span> <strong>${foundNoc.itemDesc}</strong></div>
+                                            <div><span class="text-slate-400">Port of Clearance:</span> <strong>${foundNoc.port}</strong></div>
+                                            <div><span class="text-slate-400">Status:</span> <strong class="text-emerald-700">${foundNoc.status}</strong></div>
+                                        </div>
+                                        <div class="pt-2 flex justify-end">
+                                            <button onclick="SolarOpsPages.openBsreaNoc('${foundNoc.id}')" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-700 cursor-pointer">
+                                                View Official NOC Document →
+                                            </button>
+                                        </div>
+                                    </div>
+                                `;
+                            } else {
+                                return `
+                                    <div class="p-4 bg-rose-50 rounded-xl border border-rose-200 text-xs text-rose-800 space-y-1 animate-fade-in">
+                                        <span class="font-bold flex items-center gap-1"><i class="fa-solid fa-triangle-exclamation"></i> RECORD NOT FOUND</span>
+                                        <p class="text-slate-600">No member certificate or NOC matches the reference <strong>"${q}"</strong>.</p>
+                                    </div>
+                                `;
+                            }
+                        })() : `
+                            <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-300 space-y-2 text-xs">
+                                <div class="flex items-center justify-between">
+                                    <span class="px-2.5 py-0.5 rounded-full font-bold bg-emerald-600 text-white text-[11px] flex items-center gap-1">
+                                        <i class="fa-solid fa-circle-check"></i> AUTHENTIC &amp; VALID RECORD
+                                    </span>
+                                    <span class="text-slate-400 font-mono text-[10px]">Active in Secretariat Database</span>
+                                </div>
+                                <h4 class="font-bold text-slate-900 text-sm mt-1">Rahimafrooz Renewable Energy Ltd</h4>
+                                <div class="grid grid-cols-2 gap-2 text-slate-700 pt-1 border-t border-emerald-200">
+                                    <div><span class="text-slate-400 block">Registration No:</span><strong class="font-mono text-emerald-800">BSREA/MEM/2026/012</strong></div>
+                                    <div><span class="text-slate-400 block">Category:</span><strong>Corporate Member (Grade-A Solar EPC)</strong></div>
+                                    <div><span class="text-slate-400 block">SREDA License:</span><strong>SREDA/LIC/REN-004</strong></div>
+                                    <div><span class="text-slate-400 block">Validity:</span><strong class="text-emerald-700">31 Dec 2026 (Active)</strong></div>
+                                </div>
+                                <div class="pt-2 flex justify-end">
+                                    <button onclick="SolarOpsPages.openBsreaCertificate('mem-1')" class="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-semibold hover:bg-emerald-700 cursor-pointer">
+                                        View Official Certificate (QR) →
+                                    </button>
+                                </div>
                             </div>
-                            <h4 class="font-bold text-slate-900 text-sm mt-1">Rahimafrooz Renewable Energy Ltd</h4>
-                            <div class="grid grid-cols-2 gap-2 text-slate-700 pt-1 border-t border-emerald-200">
-                                <div><span class="text-slate-400 block">Registration No:</span><strong class="font-mono text-emerald-800">BSREA/MEM/2026/012</strong></div>
-                                <div><span class="text-slate-400 block">Category:</span><strong>Corporate Member (Grade-A Solar EPC)</strong></div>
-                                <div><span class="text-slate-400 block">SREDA License:</span><strong>SREDA/LIC/REN-004</strong></div>
-                                <div><span class="text-slate-400 block">Validity:</span><strong class="text-emerald-700">31 Dec 2026 (Active)</strong></div>
-                            </div>
-                            <div class="pt-2 flex justify-end">
-                                <button onclick="SolarOpsPages.openBsreaCertificate('mem-1')" class="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-semibold hover:bg-emerald-700 cursor-pointer">
-                                    View Official Certificate (QR) →
-                                </button>
-                            </div>
-                        </div>
+                        `}
                     </div>
                 </div>
             </div>
