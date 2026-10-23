@@ -33,8 +33,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
     <!-- App Modules (with cache busting) -->
-    <script src="js/roi-calculator.js?v=2.5"></script>
-    <script src="js/pages.js?v=2.5"></script>
+    <script src="js/roi-calculator.js?v=3.2"></script>
+    <script src="js/pages.js?v=3.2"></script>
 
     <!-- Alpine.js (defer) -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
@@ -736,6 +736,9 @@
                 <!-- Net Metering -->
                 <div x-show="currentPage === 'metering'" class="animate-fade-in" x-html="window.SolarOpsPages ? window.SolarOpsPages.renderNetMetering() : ''"></div>
 
+                <!-- BSREA Portal (Membership, QR Certificates & NOC Verification) -->
+                <div x-show="currentPage === 'bsrea'" class="animate-fade-in" x-html="window.SolarOpsPages ? window.SolarOpsPages.renderBsreaPortal() : ''"></div>
+
                 <!-- Reports -->
                 <div x-show="currentPage === 'reports'" class="animate-fade-in" x-html="window.SolarOpsPages ? window.SolarOpsPages.renderReports() : ''"></div>
 
@@ -767,6 +770,7 @@
                 { id: 'projects',    label: 'Projects',       icon: 'fa-solid fa-folder-open',     badge: null },
                 { id: 'roi',         label: 'ROI Calculator', icon: 'fa-solid fa-calculator',      badge: null },
                 { id: 'metering',    label: 'Net Metering',   icon: 'fa-solid fa-file-contract',   badge: null },
+                { id: 'bsrea',       label: 'BSREA Portal',   icon: 'fa-solid fa-award',           badge: 'BSREA' },
                 { id: 'reports',     label: 'Reports',        icon: 'fa-solid fa-chart-bar',       badge: null },
                 { id: 'settings',    label: 'Settings',       icon: 'fa-solid fa-cog',             badge: null },
             ],
@@ -830,6 +834,12 @@
             init() {
                 window.solarApp = this;
                 this.updateDate();
+                try {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    if (urlParams.get('tab') === 'bsrea' || urlParams.get('verify')) {
+                        this.currentPage = 'bsrea';
+                    }
+                } catch(e){}
                 // Small delay to ensure DOM is ready for Chart.js
                 this.$nextTick(() => {
                     setTimeout(() => {

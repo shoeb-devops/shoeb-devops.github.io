@@ -1355,5 +1355,795 @@ window.SolarOpsPages = {
             </div>
         </div>
         `;
+    },
+
+    // ── 11. BSREA ONLINE MEMBERSHIP, QR CERTIFICATES & NOC PORTAL ──
+    bsreaActiveTab: 'members',
+
+    getBsreaMembers: function() {
+        const defaultMembers = [
+            {
+                id: 'mem-1',
+                regNo: 'BSREA/MEM/2026/012',
+                name: 'Rahimafrooz Renewable Energy Ltd',
+                category: 'Corporate Member (Grade-A Solar EPC)',
+                representative: 'Engr. M. A. Hasan',
+                phone: '+880 1713-000001',
+                email: 'info@rahimafrooz-solar.com',
+                sredaReg: 'SREDA/LIC/REN-004',
+                joinedDate: '12 Jan 2019',
+                validUntil: '31 Dec 2026',
+                status: 'Active'
+            },
+            {
+                id: 'mem-2',
+                regNo: 'BSREA/MEM/2026/045',
+                name: 'Solaric Bangladesh Ltd',
+                category: 'Corporate Member (Rooftop & Microgrid)',
+                representative: 'Didar Islam',
+                phone: '+880 1711-555222',
+                email: 'contact@solaric-bd.com',
+                sredaReg: 'SREDA/LIC/REN-019',
+                joinedDate: '04 Mar 2020',
+                validUntil: '31 Dec 2026',
+                status: 'Active'
+            },
+            {
+                id: 'mem-3',
+                regNo: 'BSREA/MEM/2026/078',
+                name: 'Omera Solar (MJL Bangladesh PLC)',
+                category: 'Corporate Member (C&I Industrial EPC)',
+                representative: 'Tanvir Hossain',
+                phone: '+880 1819-333444',
+                email: 'solar@omerabd.com',
+                sredaReg: 'SREDA/LIC/REN-031',
+                joinedDate: '18 Aug 2021',
+                validUntil: '31 Dec 2026',
+                status: 'Active'
+            },
+            {
+                id: 'mem-4',
+                regNo: 'BSREA/MEM/2026/091',
+                name: 'Joules Power Limited (JPL)',
+                category: 'Developer Member (Utility Scale IPP)',
+                representative: 'Rayyan Hasan',
+                phone: '+880 1912-777888',
+                email: 'operations@joulespower.com',
+                sredaReg: 'SREDA/LIC/REN-008',
+                joinedDate: '09 Oct 2022',
+                validUntil: '31 Dec 2026',
+                status: 'Active'
+            },
+            {
+                id: 'mem-5',
+                regNo: 'BSREA/MEM/2026/104',
+                name: 'Huawei Technologies (Bangladesh) - Digital Power',
+                category: 'Associate Member (Inverter & BESS Manufacturer)',
+                representative: 'Jason Zhang / Tareq Ahmed',
+                phone: '+880 1755-666777',
+                email: 'digitalpower.bd@huawei.com',
+                sredaReg: 'SREDA/LIC/REN-045',
+                joinedDate: '15 Feb 2023',
+                validUntil: '31 Dec 2026',
+                status: 'Active'
+            }
+        ];
+        try {
+            const stored = localStorage.getItem('bsrea_members_data');
+            if (stored) return JSON.parse(stored);
+        } catch(e){}
+        return defaultMembers;
+    },
+
+    saveBsreaMembers: function(m) {
+        try { localStorage.setItem('bsrea_members_data', JSON.stringify(m)); } catch(e){}
+    },
+
+    getBsreaNocs: function() {
+        const defaultNocs = [
+            {
+                id: 'noc-1',
+                nocNo: 'BSREA/NOC/CUST/2026-104',
+                applicant: 'Rahimafrooz Renewable Energy Ltd',
+                itemDesc: '12,500 Pcs Longi Hi-MO 6 550W Tier-1 Bifacial Solar Modules',
+                port: 'Chattogram Custom House',
+                lcNumber: 'LC-2026-NBL-49102',
+                sroExemption: 'S.R.O. No. 129-Ain/2021/Customs (Clean Energy)',
+                issueDate: '15 Oct 2026',
+                expiryDate: '14 Jan 2027',
+                status: 'Approved & Active'
+            },
+            {
+                id: 'noc-2',
+                nocNo: 'BSREA/NOC/CUST/2026-105',
+                applicant: 'Solaric Bangladesh Ltd',
+                itemDesc: '40 Units Huawei SUN2000-50KTL Three-Phase Solar Inverters',
+                port: 'Chattogram Port / ICD Kamalapur',
+                lcNumber: 'LC-2026-EBL-89231',
+                sroExemption: 'S.R.O. No. 129-Ain/2021/Customs (Clean Energy)',
+                issueDate: '19 Oct 2026',
+                expiryDate: '18 Jan 2027',
+                status: 'Approved & Active'
+            },
+            {
+                id: 'noc-3',
+                nocNo: 'BSREA/NOC/CUST/2026-106',
+                applicant: 'Omera Solar (MJL Bangladesh)',
+                itemDesc: '2 MWh LiFePO4 Industrial Battery Energy Storage System (BESS)',
+                port: 'Mongla Custom House',
+                lcNumber: 'LC-2026-SCB-31094',
+                sroExemption: 'S.R.O. No. 129-Ain/2021/Customs (Renewable BESS)',
+                issueDate: '22 Oct 2026',
+                expiryDate: '21 Jan 2027',
+                status: 'Approved & Active'
+            }
+        ];
+        try {
+            const stored = localStorage.getItem('bsrea_nocs_data');
+            if (stored) return JSON.parse(stored);
+        } catch(e){}
+        return defaultNocs;
+    },
+
+    saveBsreaNocs: function(n) {
+        try { localStorage.setItem('bsrea_nocs_data', JSON.stringify(n)); } catch(e){}
+    },
+
+    switchBsreaTab: function(tabName) {
+        SolarOpsPages.bsreaActiveTab = tabName;
+        const root = document.getElementById('bsrea-portal-root');
+        if (root) {
+            root.outerHTML = SolarOpsPages.renderBsreaPortal();
+        }
+    },
+
+    // Open Official Digital Membership Certificate with Scannable QR Code
+    openBsreaCertificate: function(memId) {
+        const members = SolarOpsPages.getBsreaMembers();
+        const mem = members.find(m => m.id === memId || m.regNo === memId) || members[0];
+        const verifyUrl = `https://shoeb-devops.github.io/solar-ops/?tab=bsrea&verify=${encodeURIComponent(mem.regNo)}`;
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(verifyUrl)}&margin=4`;
+
+        const bodyHtml = `
+            <div id="printable-certificate" class="bg-gradient-to-b from-amber-50/40 via-white to-emerald-50/30 p-6 rounded-2xl border-4 border-double border-amber-600/70 shadow-inner relative space-y-4">
+                <!-- Watermark Logo -->
+                <div class="text-center space-y-1 border-b-2 border-amber-600/30 pb-3">
+                    <div class="flex items-center justify-center gap-2 mb-1">
+                        <div class="w-10 h-10 rounded-full bg-emerald-700 text-amber-300 flex items-center justify-center font-bold text-lg shadow">
+                            <i class="fa-solid fa-leaf"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-sm font-extrabold text-emerald-950 uppercase tracking-wider font-serif">
+                        Bangladesh Sustainable and Renewable Energy Association (BSREA)
+                    </h3>
+                    <p class="text-[10px] text-slate-500">
+                        Secretariat: House #14, Road #04, Gulshan-1, Dhaka-1212 | Web: www.bsreabd.org
+                    </p>
+                    <span class="inline-block px-3 py-0.5 bg-amber-100 text-amber-900 border border-amber-300 rounded-full text-[10px] font-bold tracking-widest uppercase mt-1">
+                        Accredited Corporate Member
+                    </span>
+                </div>
+
+                <!-- Certificate Title -->
+                <div class="text-center py-1">
+                    <p class="text-xs uppercase tracking-widest text-slate-500 font-serif">This is to officially certify that</p>
+                    <h2 class="text-lg font-black text-slate-900 font-serif mt-1 text-emerald-900 tracking-tight">
+                        ${mem.name}
+                    </h2>
+                    <p class="text-xs text-slate-600 italic mt-0.5">has been duly registered and certified as an active corporate member in good standing under Category:</p>
+                    <div class="mt-1.5 inline-block px-4 py-1 bg-emerald-50 text-emerald-800 font-bold text-xs rounded-lg border border-emerald-300">
+                        ${mem.category}
+                    </div>
+                </div>
+
+                <!-- Meta Details & QR Code Grid -->
+                <div class="grid grid-cols-3 gap-3 items-center border-t border-b border-amber-600/20 py-3 bg-white/70 rounded-xl p-3">
+                    <div class="space-y-1 text-[11px] col-span-2">
+                        <div><span class="text-slate-400">Membership Reg No:</span> <strong class="text-slate-800 font-mono text-xs">${mem.regNo}</strong></div>
+                        <div><span class="text-slate-400">SREDA Enlistment:</span> <strong class="text-slate-800">${mem.sredaReg}</strong></div>
+                        <div><span class="text-slate-400">Authorized Rep:</span> <strong class="text-slate-800">${mem.representative}</strong></div>
+                        <div><span class="text-slate-400">Validity Period:</span> <strong class="text-emerald-700">${mem.validUntil}</strong></div>
+                        <div class="pt-1 text-[10px] text-emerald-700 font-semibold flex items-center gap-1">
+                            <i class="fa-solid fa-circle-check"></i> Verified in BSREA National Clean Energy Registry
+                        </div>
+                    </div>
+
+                    <!-- Scannable QR Code -->
+                    <div class="text-center flex flex-col items-center justify-center p-2 bg-white rounded-lg border border-slate-200 shadow-sm">
+                        <img src="${qrUrl}" alt="BSREA Verification QR Code" class="w-24 h-24 rounded border border-slate-100" />
+                        <span class="text-[9px] text-slate-500 font-mono mt-1 font-semibold flex items-center gap-1">
+                            <i class="fa-solid fa-camera"></i> Scan to Verify
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Signatures -->
+                <div class="flex justify-between items-end pt-3 px-3 text-[10px] text-slate-600">
+                    <div class="text-center">
+                        <div class="font-serif italic font-bold text-slate-800 text-xs border-b border-slate-400 pb-0.5">Engr. Nurul Islam</div>
+                        <span>President, BSREA</span>
+                    </div>
+                    <div class="w-14 h-14 rounded-full border-2 border-amber-600/60 bg-amber-50 text-amber-800 flex items-center justify-center text-center text-[8px] font-bold uppercase leading-tight shadow-sm">
+                        BSREA<br>SEAL<br>2026
+                    </div>
+                    <div class="text-center">
+                        <div class="font-serif italic font-bold text-slate-800 text-xs border-b border-slate-400 pb-0.5">Dr. Munir Ahmed</div>
+                        <span>General Secretary, BSREA</span>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const footerButtons = `
+            <button onclick="SolarOpsPages.closeModal()" class="px-4 py-2 border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-100 cursor-pointer">
+                Close
+            </button>
+            <button onclick="window.print()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold shadow flex items-center gap-1.5 cursor-pointer">
+                <i class="fa-solid fa-print"></i> Print Official Certificate
+            </button>
+        `;
+
+        SolarOpsPages.showModal('<i class="fa-solid fa-certificate text-emerald-600"></i> BSREA Official Digital Certificate with QR Code', bodyHtml, footerButtons);
+    },
+
+    // Open Official NOC Letter with QR Code
+    openBsreaNoc: function(nocId) {
+        const nocs = SolarOpsPages.getBsreaNocs();
+        const noc = nocs.find(n => n.id === nocId || n.nocNo === nocId) || nocs[0];
+        const verifyUrl = `https://shoeb-devops.github.io/solar-ops/?tab=bsrea&verify=${encodeURIComponent(noc.nocNo)}`;
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(verifyUrl)}&margin=4`;
+
+        const bodyHtml = `
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 text-xs font-sans">
+                <!-- Letterhead -->
+                <div class="border-b-2 border-emerald-700 pb-3 text-center">
+                    <h3 class="font-serif font-black text-sm text-emerald-950 uppercase tracking-tight">
+                        Bangladesh Sustainable and Renewable Energy Association (BSREA)
+                    </h3>
+                    <p class="text-[10px] text-slate-500">Gulshan Secretariat, Dhaka-1212 | Email: info@bsreabd.org | Phone: 01788 308088</p>
+                    <div class="mt-2 text-right text-[10px] text-slate-500 font-mono">Date: ${noc.issueDate} | Ref: ${noc.nocNo}</div>
+                </div>
+
+                <!-- Addressee -->
+                <div class="space-y-1 text-slate-800">
+                    <p><strong>To:</strong> The Commissioner of Customs</p>
+                    <p>Custom House, ${noc.port}, Bangladesh.</p>
+                    <p class="pt-2 font-bold text-slate-900 border-b pb-1">
+                        Subject: No Objection Certificate (NOC) & Recommendation for Concessionary Customs Clearance of Solar Renewable Equipment.
+                    </p>
+                </div>
+
+                <!-- Body -->
+                <div class="space-y-2 text-slate-700 text-[11px] leading-relaxed">
+                    <p>Dear Sir,</p>
+                    <p>This is to certify that <strong>${noc.applicant}</strong> is an active registered corporate member of BSREA. The following imported clean energy equipment has been verified by the BSREA Technical & Standards Committee and is 100% designated for rooftop/utility solar PV power generation in Bangladesh:</p>
+                    
+                    <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-1 text-[11px]">
+                        <div>• <strong>Consignment:</strong> ${noc.itemDesc}</div>
+                        <div>• <strong>L/C Reference:</strong> ${noc.lcNumber}</div>
+                        <div>• <strong>Statutory Duty Benefit:</strong> Eligible under ${noc.sroExemption}</div>
+                        <div>• <strong>Validity:</strong> Valid up to ${noc.expiryDate}</div>
+                    </div>
+
+                    <p>BSREA has <strong>No Objection</strong> to the concessionary assessment and clearance of the consignment under the prevailing Renewable Energy Import Policy.</p>
+                </div>
+
+                <!-- QR Validation Block -->
+                <div class="flex items-center justify-between border-t border-b border-slate-100 py-3 bg-emerald-50/50 rounded-xl px-4">
+                    <div class="text-[11px] space-y-0.5">
+                        <strong class="text-emerald-900 block font-semibold flex items-center gap-1">
+                            <i class="fa-solid fa-shield-halved text-emerald-600"></i> Online Customs Verification
+                        </strong>
+                        <span class="text-slate-600 text-[10px]">Duty assessment officers can verify authentic issuance live on the BSREA Secretariat portal.</span>
+                    </div>
+                    <img src="${qrUrl}" alt="NOC QR" class="w-20 h-20 bg-white p-1 rounded border border-slate-200" />
+                </div>
+
+                <!-- Sign -->
+                <div class="flex justify-between items-end pt-2 text-[10px] text-slate-600">
+                    <div>
+                        <span class="block font-bold text-slate-800">Engr. Nurul Islam</span>
+                        <span>President, BSREA</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="block font-bold text-slate-800">IT Secretariat System</span>
+                        <span>BSREA Digital Portal</span>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const footerButtons = `
+            <button onclick="SolarOpsPages.closeModal()" class="px-4 py-2 border rounded-lg text-slate-600">Close</button>
+            <button onclick="window.print()" class="px-5 py-2 bg-emerald-600 text-white rounded-lg font-semibold flex items-center gap-1.5 cursor-pointer">
+                <i class="fa-solid fa-print"></i> Print Official NOC Letter
+            </button>
+        `;
+
+        SolarOpsPages.showModal('<i class="fa-solid fa-file-shield text-emerald-600"></i> BSREA Official NOC Clearance Document', bodyHtml, footerButtons);
+    },
+
+    // Public QR Verification Function
+    verifyBsreaRecord: function(query) {
+        const q = (query || document.getElementById('bsrea-verify-input')?.value || '').trim();
+        if (!q) {
+            alert('Please enter a Certificate Number or NOC Reference to verify');
+            return;
+        }
+
+        const members = SolarOpsPages.getBsreaMembers();
+        const nocs = SolarOpsPages.getBsreaNocs();
+
+        const foundMember = members.find(m => m.regNo.toLowerCase().includes(q.toLowerCase()) || m.name.toLowerCase().includes(q.toLowerCase()));
+        const foundNoc = nocs.find(n => n.nocNo.toLowerCase().includes(q.toLowerCase()) || n.applicant.toLowerCase().includes(q.toLowerCase()));
+
+        const resultContainer = document.getElementById('bsrea-verify-result');
+        if (!resultContainer) return;
+
+        if (foundMember) {
+            resultContainer.innerHTML = `
+                <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-300 space-y-2 animate-fade-in text-xs">
+                    <div class="flex items-center justify-between">
+                        <span class="px-2.5 py-0.5 rounded-full font-bold bg-emerald-600 text-white text-[11px] flex items-center gap-1">
+                            <i class="fa-solid fa-circle-check"></i> AUTHENTIC & VALID RECORD
+                        </span>
+                        <span class="text-slate-400 font-mono text-[10px]">Verified: Just now</span>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-sm mt-1">${foundMember.name}</h4>
+                    <div class="grid grid-cols-2 gap-2 text-slate-700 pt-1 border-t border-emerald-200">
+                        <div><span class="text-slate-400 block">Registration No:</span><strong class="font-mono text-emerald-800">${foundMember.regNo}</strong></div>
+                        <div><span class="text-slate-400 block">Category:</span><strong>${foundMember.category}</strong></div>
+                        <div><span class="text-slate-400 block">SREDA License:</span><strong>${foundMember.sredaReg}</strong></div>
+                        <div><span class="text-slate-400 block">Validity:</span><strong class="text-emerald-700">${foundMember.validUntil} (Active)</strong></div>
+                    </div>
+                    <div class="pt-2 flex justify-end">
+                        <button onclick="SolarOpsPages.openBsreaCertificate('${foundMember.id}')" class="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-semibold hover:bg-emerald-700 cursor-pointer">
+                            View Official Certificate (QR) →
+                        </button>
+                    </div>
+                </div>
+            `;
+            SolarOpsPages.showToast('✅ BSREA Member Certificate Verified!');
+        } else if (foundNoc) {
+            resultContainer.innerHTML = `
+                <div class="p-4 bg-blue-50 rounded-xl border border-blue-300 space-y-2 animate-fade-in text-xs">
+                    <div class="flex items-center justify-between">
+                        <span class="px-2.5 py-0.5 rounded-full font-bold bg-blue-600 text-white text-[11px] flex items-center gap-1">
+                            <i class="fa-solid fa-circle-check"></i> OFFICIAL NOC VERIFIED
+                        </span>
+                        <span class="text-slate-400 font-mono text-[10px]">Verified: Just now</span>
+                    </div>
+                    <h4 class="font-bold text-slate-900 text-sm mt-1">${foundNoc.applicant}</h4>
+                    <div class="space-y-1 text-slate-700 pt-1 border-t border-blue-200">
+                        <div><span class="text-slate-400">NOC Number:</span> <strong class="font-mono text-blue-800">${foundNoc.nocNo}</strong></div>
+                        <div><span class="text-slate-400">Consignment:</span> <strong>${foundNoc.itemDesc}</strong></div>
+                        <div><span class="text-slate-400">Port of Clearance:</span> <strong>${foundNoc.port}</strong></div>
+                        <div><span class="text-slate-400">Status:</span> <strong class="text-emerald-700">${foundNoc.status}</strong></div>
+                    </div>
+                    <div class="pt-2 flex justify-end">
+                        <button onclick="SolarOpsPages.openBsreaNoc('${foundNoc.id}')" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-700 cursor-pointer">
+                            View Official NOC Document →
+                        </button>
+                    </div>
+                </div>
+            `;
+            SolarOpsPages.showToast('✅ BSREA Customs NOC Record Verified!');
+        } else {
+            resultContainer.innerHTML = `
+                <div class="p-4 bg-rose-50 rounded-xl border border-rose-200 text-xs text-rose-800 space-y-1 animate-fade-in">
+                    <span class="font-bold flex items-center gap-1"><i class="fa-solid fa-triangle-exclamation"></i> RECORD NOT FOUND</span>
+                    <p class="text-slate-600">No member certificate or NOC matches the reference <strong>"${q}"</strong>. Please check the spelling or contact BSREA Secretariat.</p>
+                </div>
+            `;
+        }
+    },
+
+    openAddBsreaMemberModal: function() {
+        const body = `
+            <div class="space-y-3">
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Company Name *</label>
+                    <input id="bm-name" type="text" placeholder="e.g. Beximco Solar Energy Ltd" class="w-full px-3 py-2 border rounded-lg text-slate-800" />
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Membership Category</label>
+                        <select id="bm-cat" class="w-full px-3 py-2 border rounded-lg bg-white text-slate-800">
+                            <option>Corporate Member (Grade-A Solar EPC)</option>
+                            <option>Associate Member (Solar Importer / Supplier)</option>
+                            <option>Developer Member (Solar IPP)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">SREDA License No</label>
+                        <input id="bm-sreda" type="text" value="SREDA/LIC/REN-052" class="w-full px-3 py-2 border rounded-lg text-slate-800" />
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Representative Name</label>
+                        <input id="bm-rep" type="text" placeholder="Engr. Asaduzzaman" class="w-full px-3 py-2 border rounded-lg text-slate-800" />
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Official Email</label>
+                        <input id="bm-email" type="email" placeholder="solar@beximco.net" class="w-full px-3 py-2 border rounded-lg text-slate-800" />
+                    </div>
+                </div>
+            </div>
+        `;
+        SolarOpsPages.showModal('<i class="fa-solid fa-user-plus text-emerald-600"></i> Register New BSREA Member Company', body, `
+            <button onclick="SolarOpsPages.closeModal()" class="px-4 py-2 border rounded-lg text-slate-600">Cancel</button>
+            <button onclick="SolarOpsPages.submitNewBsreaMember()" class="px-5 py-2 bg-emerald-600 text-white rounded-lg font-semibold flex items-center gap-1.5 cursor-pointer">
+                <i class="fa-solid fa-certificate"></i> Register & Issue QR Certificate
+            </button>
+        `);
+    },
+
+    submitNewBsreaMember: function() {
+        const name = document.getElementById('bm-name')?.value.trim();
+        const cat = document.getElementById('bm-cat')?.value;
+        const sreda = document.getElementById('bm-sreda')?.value.trim() || 'SREDA/LIC/REN-055';
+        const rep = document.getElementById('bm-rep')?.value.trim() || 'Managing Director';
+        const email = document.getElementById('bm-email')?.value.trim() || 'info@company.com';
+
+        if (!name) {
+            alert('Please enter company name');
+            return;
+        }
+
+        const members = SolarOpsPages.getBsreaMembers();
+        const newNo = 'BSREA/MEM/2026/' + (100 + members.length + 1);
+        const newMem = {
+            id: 'mem-' + Date.now(),
+            regNo: newNo,
+            name: name,
+            category: cat,
+            representative: rep,
+            phone: '+880 1712-000000',
+            email: email,
+            sredaReg: sreda,
+            joinedDate: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+            validUntil: '31 Dec 2026',
+            status: 'Active'
+        };
+
+        members.unshift(newMem);
+        SolarOpsPages.saveBsreaMembers(members);
+        SolarOpsPages.closeModal();
+        SolarOpsPages.switchBsreaTab('members');
+        SolarOpsPages.showToast('✅ Registered! Opening generated QR Certificate...');
+        setTimeout(() => {
+            SolarOpsPages.openBsreaCertificate(newMem.id);
+        }, 300);
+    },
+
+    openIssueNocModal: function() {
+        const body = `
+            <div class="space-y-3">
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Applying Member Company *</label>
+                    <select id="bn-applicant" class="w-full px-3 py-2 border rounded-lg bg-white text-slate-800">
+                        <option>Rahimafrooz Renewable Energy Ltd</option>
+                        <option>Solaric Bangladesh Ltd</option>
+                        <option>Omera Solar (MJL Bangladesh)</option>
+                        <option>Joules Power Limited</option>
+                        <option>Huawei Digital Power</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Equipment Consignment Description *</label>
+                    <input id="bn-item" type="text" value="8,000 Pcs Tier-1 Mono PERC 545W Solar PV Modules" class="w-full px-3 py-2 border rounded-lg text-slate-800" />
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Port of Clearance</label>
+                        <select id="bn-port" class="w-full px-3 py-2 border rounded-lg bg-white text-slate-800">
+                            <option>Chattogram Custom House</option>
+                            <option>Mongla Custom House</option>
+                            <option>Dhaka Airport Custom House</option>
+                            <option>Benapole Land Customs</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">L/C Reference Number</label>
+                        <input id="bn-lc" type="text" value="LC-2026-PUB-49120" class="w-full px-3 py-2 border rounded-lg text-slate-800 font-mono" />
+                    </div>
+                </div>
+            </div>
+        `;
+        SolarOpsPages.showModal('<i class="fa-solid fa-file-shield text-blue-600"></i> Issue Customs Duty Exemption NOC', body, `
+            <button onclick="SolarOpsPages.closeModal()" class="px-4 py-2 border rounded-lg text-slate-600">Cancel</button>
+            <button onclick="SolarOpsPages.submitNewNoc()" class="px-5 py-2 bg-blue-600 text-white rounded-lg font-semibold flex items-center gap-1.5 cursor-pointer">
+                <i class="fa-solid fa-stamp"></i> Issue Official NOC
+            </button>
+        `);
+    },
+
+    submitNewNoc: function() {
+        const applicant = document.getElementById('bn-applicant')?.value;
+        const item = document.getElementById('bn-item')?.value.trim();
+        const port = document.getElementById('bn-port')?.value;
+        const lc = document.getElementById('bn-lc')?.value.trim() || 'LC-2026-NBL-001';
+
+        const nocs = SolarOpsPages.getBsreaNocs();
+        const newNo = 'BSREA/NOC/CUST/2026-' + (110 + nocs.length);
+        const newNoc = {
+            id: 'noc-' + Date.now(),
+            nocNo: newNo,
+            applicant: applicant,
+            itemDesc: item,
+            port: port,
+            lcNumber: lc,
+            sroExemption: 'S.R.O. No. 129-Ain/2021/Customs (Clean Energy)',
+            issueDate: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+            expiryDate: '30 Apr 2027',
+            status: 'Approved & Active'
+        };
+
+        nocs.unshift(newNoc);
+        SolarOpsPages.saveBsreaNocs(nocs);
+        SolarOpsPages.closeModal();
+        SolarOpsPages.switchBsreaTab('noc');
+        SolarOpsPages.showToast('✅ NOC Certificate Issued! Opening document...');
+        setTimeout(() => {
+            SolarOpsPages.openBsreaNoc(newNoc.id);
+        }, 300);
+    },
+
+    renderBsreaPortal: function() {
+        const members = SolarOpsPages.getBsreaMembers();
+        const nocs = SolarOpsPages.getBsreaNocs();
+        const activeTab = SolarOpsPages.bsreaActiveTab || 'members';
+
+        const membersRows = members.map(m => `
+            <tr class="hover:bg-slate-50 transition">
+                <td class="p-3 font-mono font-bold text-slate-800 text-[11px]">
+                    ${m.regNo}
+                </td>
+                <td class="p-3">
+                    <strong class="text-slate-900 block text-xs">${m.name}</strong>
+                    <span class="text-[11px] text-slate-500">${m.category}</span>
+                </td>
+                <td class="p-3 text-[11px]">
+                    <span class="text-slate-700 block">${m.representative}</span>
+                    <span class="text-slate-400 font-mono">${m.sredaReg}</span>
+                </td>
+                <td class="p-3 text-[11px] text-slate-600">
+                    ${m.validUntil}
+                </td>
+                <td class="p-3">
+                    <span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 font-bold rounded text-[10px] inline-flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> ${m.status}
+                    </span>
+                </td>
+                <td class="p-3 text-right">
+                    <button onclick="SolarOpsPages.openBsreaCertificate('${m.id}')"
+                            class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold shadow-sm inline-flex items-center gap-1 cursor-pointer">
+                        <i class="fa-solid fa-qrcode"></i> Certificate (QR)
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+
+        const nocRows = nocs.map(n => `
+            <tr class="hover:bg-slate-50 transition">
+                <td class="p-3 font-mono font-bold text-slate-800 text-[11px]">${n.nocNo}</td>
+                <td class="p-3 font-semibold text-slate-800 text-xs">${n.applicant}</td>
+                <td class="p-3 text-[11px] text-slate-600 max-w-[280px] truncate" title="${n.itemDesc}">${n.itemDesc}</td>
+                <td class="p-3 text-[11px] text-slate-700 font-medium">${n.port}</td>
+                <td class="p-3 text-[11px] text-slate-500">${n.issueDate}</td>
+                <td class="p-3"><span class="px-2 py-0.5 bg-blue-100 text-blue-700 font-bold rounded text-[10px]">${n.status}</span></td>
+                <td class="p-3 text-right">
+                    <button onclick="SolarOpsPages.openBsreaNoc('${n.id}')"
+                            class="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold shadow-sm inline-flex items-center gap-1 cursor-pointer">
+                        <i class="fa-solid fa-file-shield"></i> View NOC (QR)
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+
+        return `
+        <div id="bsrea-portal-root" class="p-4 sm:p-6 space-y-6">
+            <!-- Header Banner -->
+            <div class="bg-gradient-to-r from-emerald-900 via-slate-900 to-emerald-950 text-white p-6 rounded-2xl shadow-lg border border-emerald-800/40 relative overflow-hidden">
+                <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-400 text-emerald-950 uppercase tracking-wider">
+                                Apex Renewable Association
+                            </span>
+                            <span class="text-xs text-emerald-300">Govt. Reg #TO-924/2018</span>
+                        </div>
+                        <h2 class="text-2xl font-bold font-serif text-white tracking-tight">
+                            Bangladesh Sustainable and Renewable Energy Association (BSREA)
+                        </h2>
+                        <p class="text-xs text-emerald-200/80 max-w-2xl">
+                            National Digital Operations Secretariat — Online Membership Registry, QR Code Digital Certificates &amp; Customs Duty Exemption NOC Portal
+                        </p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="SolarOpsPages.openAddBsreaMemberModal()" class="px-3.5 py-2 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold rounded-lg shadow transition inline-flex items-center gap-1.5 cursor-pointer">
+                            <i class="fa-solid fa-plus"></i> New Member Reg.
+                        </button>
+                        <button onclick="SolarOpsPages.openIssueNocModal()" class="px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold rounded-lg shadow transition inline-flex items-center gap-1.5 cursor-pointer">
+                            <i class="fa-solid fa-stamp"></i> Issue NOC
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Association Stats -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg"><i class="fa-solid fa-building"></i></div>
+                    <div>
+                        <span class="text-[11px] text-slate-400 uppercase font-semibold">Registered Members</span>
+                        <h4 class="text-xl font-bold text-slate-800">${members.length + 138} Companies</h4>
+                    </div>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-lg"><i class="fa-solid fa-certificate"></i></div>
+                    <div>
+                        <span class="text-[11px] text-slate-400 uppercase font-semibold">QR Certificates</span>
+                        <h4 class="text-xl font-bold text-slate-800">100% Digitalized</h4>
+                    </div>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-lg"><i class="fa-solid fa-file-shield"></i></div>
+                    <div>
+                        <span class="text-[11px] text-slate-400 uppercase font-semibold">Customs NOCs Issued</span>
+                        <h4 class="text-xl font-bold text-slate-800">${nocs.length + 309} Consignments</h4>
+                    </div>
+                </div>
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center text-lg"><i class="fa-solid fa-qrcode"></i></div>
+                    <div>
+                        <span class="text-[11px] text-slate-400 uppercase font-semibold">Live Scans Today</span>
+                        <h4 class="text-xl font-bold text-slate-800">128 Scans</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Navigation Bar -->
+            <div class="flex border-b border-slate-200 gap-2">
+                <button onclick="SolarOpsPages.switchBsreaTab('members')"
+                        class="px-4 py-2.5 text-xs font-bold border-b-2 transition flex items-center gap-2 cursor-pointer ${activeTab === 'members' ? 'border-emerald-600 text-emerald-700 bg-emerald-50/50 rounded-t-lg' : 'border-transparent text-slate-500 hover:text-slate-800'}">
+                    <i class="fa-solid fa-users"></i> Member Directory &amp; Certificates (${members.length})
+                </button>
+                <button onclick="SolarOpsPages.switchBsreaTab('noc')"
+                        class="px-4 py-2.5 text-xs font-bold border-b-2 transition flex items-center gap-2 cursor-pointer ${activeTab === 'noc' ? 'border-emerald-600 text-emerald-700 bg-emerald-50/50 rounded-t-lg' : 'border-transparent text-slate-500 hover:text-slate-800'}">
+                    <i class="fa-solid fa-file-shield"></i> NOC Management (${nocs.length})
+                </button>
+                <button onclick="SolarOpsPages.switchBsreaTab('verify')"
+                        class="px-4 py-2.5 text-xs font-bold border-b-2 transition flex items-center gap-2 cursor-pointer ${activeTab === 'verify' ? 'border-emerald-600 text-emerald-700 bg-emerald-50/50 rounded-t-lg' : 'border-transparent text-slate-500 hover:text-slate-800'}">
+                    <i class="fa-solid fa-qrcode"></i> Public Online Verification Portal
+                </button>
+            </div>
+
+            <!-- TAB 1: MEMBERS DIRECTORY -->
+            <div class="${activeTab === 'members' ? 'block' : 'hidden'} space-y-4">
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="p-4 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-sm">Accredited Clean Energy Enterprises</h3>
+                            <p class="text-xs text-slate-400">Solar EPCs, Inverter Importers, Manufacturers and IPPs</p>
+                        </div>
+                        <div class="flex gap-2 w-full sm:w-auto">
+                            <input type="text" placeholder="Search member company..." onkeyup="
+                                const val = this.value.toLowerCase();
+                                document.querySelectorAll('#bsrea-members-tbody tr').forEach(r => {
+                                    r.style.display = r.innerText.toLowerCase().includes(val) ? '' : 'none';
+                                });
+                            " class="px-3 py-1.5 border border-slate-200 rounded-lg text-xs w-full sm:w-64" />
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-50 text-slate-500 uppercase tracking-wider font-semibold border-b border-slate-200">
+                                <tr>
+                                    <th class="p-3">Membership Reg No</th>
+                                    <th class="p-3">Company &amp; Sector</th>
+                                    <th class="p-3">Representative / SREDA</th>
+                                    <th class="p-3">Valid Until</th>
+                                    <th class="p-3">Status</th>
+                                    <th class="p-3 text-right">QR Certificate</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bsrea-members-tbody" class="divide-y divide-slate-100">
+                                ${membersRows}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: NOC MANAGEMENT -->
+            <div class="${activeTab === 'noc' ? 'block' : 'hidden'} space-y-4">
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="p-4 border-b border-slate-100 flex justify-between items-center">
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-sm">Issued No Objection Certificates (Customs Duty Exemption)</h3>
+                            <p class="text-xs text-slate-400">Approved consignments under S.R.O. Clean Energy Statutory Benefits</p>
+                        </div>
+                        <button onclick="SolarOpsPages.openIssueNocModal()" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold cursor-pointer">
+                            + New NOC Application
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-50 text-slate-500 uppercase tracking-wider font-semibold border-b border-slate-200">
+                                <tr>
+                                    <th class="p-3">NOC Number</th>
+                                    <th class="p-3">Applicant Company</th>
+                                    <th class="p-3">Consignment Details</th>
+                                    <th class="p-3">Port of Clearance</th>
+                                    <th class="p-3">Issue Date</th>
+                                    <th class="p-3">Status</th>
+                                    <th class="p-3 text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                ${nocRows}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: PUBLIC ONLINE VERIFICATION TOOL -->
+            <div class="${activeTab === 'verify' ? 'block' : 'hidden'} space-y-6 max-w-2xl mx-auto">
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 text-center">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto text-xl">
+                        <i class="fa-solid fa-qrcode"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-lg">BSREA Public Document Verification</h3>
+                        <p class="text-xs text-slate-500">Instant real-time authentication of BSREA Membership Certificates &amp; Customs Duty NOCs</p>
+                    </div>
+
+                    <div class="flex gap-2 max-w-lg mx-auto">
+                        <input id="bsrea-verify-input" type="text" value="BSREA/MEM/2026/012"
+                               placeholder="Enter Certificate No (e.g. BSREA/MEM/2026/012)"
+                               class="flex-1 px-4 py-2.5 border border-slate-300 rounded-xl text-xs font-mono font-semibold focus:ring-2 focus:ring-emerald-500" />
+                        <button onclick="SolarOpsPages.verifyBsreaRecord()"
+                                class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shadow flex items-center gap-1.5 cursor-pointer">
+                            <i class="fa-solid fa-magnifying-glass"></i> Verify
+                        </button>
+                    </div>
+
+                    <div class="flex justify-center gap-2 text-[11px] text-slate-500 pt-1">
+                        <span>Try demo records:</span>
+                        <button onclick="document.getElementById('bsrea-verify-input').value='BSREA/MEM/2026/012'; SolarOpsPages.verifyBsreaRecord();" class="text-emerald-700 font-bold hover:underline cursor-pointer">Rahimafrooz (#012)</button>
+                        <span>•</span>
+                        <button onclick="document.getElementById('bsrea-verify-input').value='BSREA/NOC/CUST/2026-104'; SolarOpsPages.verifyBsreaRecord();" class="text-blue-700 font-bold hover:underline cursor-pointer">Customs NOC (#104)</button>
+                    </div>
+
+                    <!-- Live Verification Output Container -->
+                    <div id="bsrea-verify-result" class="pt-3 text-left">
+                        <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-300 space-y-2 text-xs">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-0.5 rounded-full font-bold bg-emerald-600 text-white text-[11px] flex items-center gap-1">
+                                    <i class="fa-solid fa-circle-check"></i> AUTHENTIC &amp; VALID RECORD
+                                </span>
+                                <span class="text-slate-400 font-mono text-[10px]">Active in Secretariat Database</span>
+                            </div>
+                            <h4 class="font-bold text-slate-900 text-sm mt-1">Rahimafrooz Renewable Energy Ltd</h4>
+                            <div class="grid grid-cols-2 gap-2 text-slate-700 pt-1 border-t border-emerald-200">
+                                <div><span class="text-slate-400 block">Registration No:</span><strong class="font-mono text-emerald-800">BSREA/MEM/2026/012</strong></div>
+                                <div><span class="text-slate-400 block">Category:</span><strong>Corporate Member (Grade-A Solar EPC)</strong></div>
+                                <div><span class="text-slate-400 block">SREDA License:</span><strong>SREDA/LIC/REN-004</strong></div>
+                                <div><span class="text-slate-400 block">Validity:</span><strong class="text-emerald-700">31 Dec 2026 (Active)</strong></div>
+                            </div>
+                            <div class="pt-2 flex justify-end">
+                                <button onclick="SolarOpsPages.openBsreaCertificate('mem-1')" class="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-semibold hover:bg-emerald-700 cursor-pointer">
+                                    View Official Certificate (QR) →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
     }
 };
