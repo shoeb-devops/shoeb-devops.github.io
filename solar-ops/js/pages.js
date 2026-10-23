@@ -1517,7 +1517,7 @@ window.SolarOpsPages = {
                         Bangladesh Sustainable and Renewable Energy Association (BSREA)
                     </h3>
                     <p class="text-[10px] text-slate-500">
-                        Secretariat: House #14, Road #04, Gulshan-1, Dhaka-1212 | Web: www.bsreabd.org
+                        Secretariat: Suite # 21/B, Navana Tower, 45 Gulshan South Avenue (Circle-1), Dhaka-1212 | Web: www.bsreabd.org
                     </p>
                     <span class="inline-block px-3 py-0.5 bg-amber-100 text-amber-900 border border-amber-300 rounded-full text-[10px] font-bold tracking-widest uppercase mt-1">
                         Accredited Corporate Member
@@ -1560,14 +1560,14 @@ window.SolarOpsPages = {
                 <!-- Signatures -->
                 <div class="flex justify-between items-end pt-3 px-3 text-[10px] text-slate-600">
                     <div class="text-center">
-                        <div class="font-serif italic font-bold text-slate-800 text-xs border-b border-slate-400 pb-0.5">Engr. Nurul Islam</div>
+                        <div class="font-serif italic font-bold text-slate-800 text-xs border-b border-slate-400 pb-0.5">Mostafa Al Mahmud</div>
                         <span>President, BSREA</span>
                     </div>
                     <div class="w-14 h-14 rounded-full border-2 border-amber-600/60 bg-amber-50 text-amber-800 flex items-center justify-center text-center text-[8px] font-bold uppercase leading-tight shadow-sm">
                         BSREA<br>SEAL<br>2026
                     </div>
                     <div class="text-center">
-                        <div class="font-serif italic font-bold text-slate-800 text-xs border-b border-slate-400 pb-0.5">Dr. Munir Ahmed</div>
+                        <div class="font-serif italic font-bold text-slate-800 text-xs border-b border-slate-400 pb-0.5">Engr. Mohammad Ataur Rahman Sarker</div>
                         <span>General Secretary, BSREA</span>
                     </div>
                 </div>
@@ -1642,12 +1642,12 @@ window.SolarOpsPages = {
                 <!-- Sign -->
                 <div class="flex justify-between items-end pt-2 text-[10px] text-slate-600">
                     <div>
-                        <span class="block font-bold text-slate-800">Engr. Nurul Islam</span>
+                        <span class="block font-bold text-slate-800">Mostafa Al Mahmud</span>
                         <span>President, BSREA</span>
                     </div>
                     <div class="text-right">
-                        <span class="block font-bold text-slate-800">IT Secretariat System</span>
-                        <span>BSREA Digital Portal</span>
+                        <span class="block font-bold text-slate-800">Engr. Mohammad Ataur Rahman Sarker</span>
+                        <span>General Secretary, BSREA</span>
                     </div>
                 </div>
             </div>
