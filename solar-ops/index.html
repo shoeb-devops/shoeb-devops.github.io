@@ -32,9 +32,9 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
-    <!-- App Modules -->
-    <script src="js/roi-calculator.js"></script>
-    <script src="js/pages.js"></script>
+    <!-- App Modules (with cache busting) -->
+    <script src="js/roi-calculator.js?v=2.5"></script>
+    <script src="js/pages.js?v=2.5"></script>
 
     <!-- Alpine.js (defer) -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
@@ -160,32 +160,58 @@
                         <span class="text-xs font-medium text-green-700">Live</span>
                     </div>
 
-                    <!-- Notification bell -->
-                    <button class="relative p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition">
-                        <i class="fa-solid fa-bell text-lg"></i>
-                        <span class="absolute -top-0.5 -right-0.5 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white"
-                              x-text="alerts.filter(a => !a.read).length"></span>
-                    </button>
+                    <!-- Notification bell with dropdown -->
+                    <div class="relative" x-data="{ notifOpen: false }">
+                        <button @click="notifOpen = !notifOpen" class="relative p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition cursor-pointer">
+                            <i class="fa-solid fa-bell text-lg"></i>
+                            <span class="absolute -top-0.5 -right-0.5 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white"
+                                  x-text="alerts.filter(a => !a.read).length"></span>
+                        </button>
+                        <div x-show="notifOpen" @click.away="notifOpen = false" x-cloak
+                             class="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-xl shadow-2xl border border-slate-200 py-3 z-50 animate-fade-in">
+                            <div class="px-4 pb-2 border-b border-slate-100 flex items-center justify-between">
+                                <h4 class="font-bold text-slate-800 text-sm">System Alerts</h4>
+                                <button @click="alerts.forEach(a => a.read = true); notifOpen = false" class="text-xs text-blue-600 hover:underline font-semibold cursor-pointer">Mark all read</button>
+                            </div>
+                            <div class="max-h-72 overflow-y-auto divide-y divide-slate-100 text-xs">
+                                <template x-for="(al, idx) in alerts" :key="idx">
+                                    <div class="p-3 hover:bg-slate-50 flex items-start gap-3 transition">
+                                        <span :class="al.severity === 'critical' ? 'text-red-500 bg-red-50' : (al.severity === 'warning' ? 'text-amber-500 bg-amber-50' : 'text-blue-500 bg-blue-50')"
+                                              class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-xs">
+                                            <i :class="al.severity === 'critical' ? 'fa-solid fa-triangle-exclamation' : (al.severity === 'warning' ? 'fa-solid fa-bell' : 'fa-solid fa-info')"></i>
+                                        </span>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="font-semibold text-slate-800 truncate" x-text="al.message"></p>
+                                            <p class="text-slate-400 text-[11px]" x-text="al.plant + ' • ' + al.time"></p>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                            <div class="px-4 pt-2 border-t border-slate-100 text-center">
+                                <button @click="selectPage('alerts'); notifOpen = false" class="text-xs text-blue-600 hover:text-blue-700 font-semibold cursor-pointer">View all alert diagnostics →</button>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- User dropdown -->
                     <div class="relative" x-data="{ userMenu: false }">
-                        <button @click="userMenu = !userMenu" class="flex items-center gap-2 pl-3 pr-2 py-1.5 hover:bg-slate-100 rounded-lg transition">
-                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
+                        <button @click="userMenu = !userMenu" class="flex items-center gap-2 pl-3 pr-2 py-1.5 hover:bg-slate-100 rounded-lg transition cursor-pointer">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-sm">
                                 <span class="text-white text-xs font-bold">SI</span>
                             </div>
                             <span class="hidden sm:block text-sm font-medium text-slate-700">Shariful</span>
                             <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 hidden sm:block"></i>
                         </button>
-                        <div x-show="userMenu" @click.away="userMenu = false"
-                             x-transition:enter="transition ease-out duration-100"
-                             x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
-                             x-transition:leave="transition ease-in duration-75"
-                             x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
-                             class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-slate-200 py-2 z-50">
-                            <a href="#" class="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"><i class="fa-solid fa-user w-4"></i> Profile</a>
-                            <a href="#" class="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"><i class="fa-solid fa-cog w-4"></i> Settings</a>
+                        <div x-show="userMenu" @click.away="userMenu = false" x-cloak
+                             class="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-xl border border-slate-200 py-2 z-50">
+                            <div class="px-4 py-2 border-b border-slate-100">
+                                <p class="text-xs font-bold text-slate-800">Shariful Islam Shoeb</p>
+                                <p class="text-[11px] text-slate-400">Lead System Engineer</p>
+                            </div>
+                            <a href="#" @click.prevent="selectPage('settings'); userMenu = false" class="flex items-center gap-2 px-4 py-2 text-xs text-slate-700 hover:bg-slate-50"><i class="fa-solid fa-user w-4 text-slate-400"></i> Profile</a>
+                            <a href="#" @click.prevent="selectPage('settings'); userMenu = false" class="flex items-center gap-2 px-4 py-2 text-xs text-slate-700 hover:bg-slate-50"><i class="fa-solid fa-cog w-4 text-slate-400"></i> Platform Settings</a>
                             <hr class="my-1 border-slate-100">
-                            <a href="#" class="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50"><i class="fa-solid fa-right-from-bracket w-4"></i> Sign Out</a>
+                            <a href="#" @click.prevent="alert('Logged in as Shariful Islam Shoeb (Administrator). Role: Superuser'); userMenu = false" class="flex items-center gap-2 px-4 py-2 text-xs text-red-600 hover:bg-red-50"><i class="fa-solid fa-right-from-bracket w-4"></i> Sign Out</a>
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-// SolarOps Bangladesh - Secondary Pages Component Library
+// SolarOps Bangladesh - Secondary Pages Component Library (v3.0 - Full Interactivity)
 
 const defaultPlantsData = [
     {
@@ -49,6 +49,55 @@ const defaultPlantsData = [
 ];
 
 window.SolarOpsPages = {
+    // ── Universal Modal Framework (Attached Directly to document.body) ──
+    showModal: function(title, bodyHtml, footerButtonsHtml) {
+        let m = document.getElementById('solarops-dynamic-modal');
+        if (!m) {
+            m = document.createElement('div');
+            m.id = 'solarops-dynamic-modal';
+            document.body.appendChild(m);
+        }
+        m.className = 'fixed inset-0 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4';
+        m.style.cssText = 'position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important; z-index: 999999 !important; display: flex !important;';
+        
+        m.innerHTML = `
+            <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-lg w-full overflow-hidden animate-fade-in relative" onclick="event.stopPropagation()">
+                <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/70">
+                    <h3 class="font-bold text-slate-800 text-base flex items-center gap-2">${title}</h3>
+                    <button onclick="SolarOpsPages.closeModal()" class="text-slate-400 hover:text-slate-600 text-lg p-1.5 rounded-lg hover:bg-slate-100 cursor-pointer">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="p-6 text-xs text-slate-600 space-y-4 max-h-[75vh] overflow-y-auto">
+                    ${bodyHtml}
+                </div>
+                ${footerButtonsHtml ? `<div class="px-6 py-3 bg-slate-50 border-t border-slate-100 flex justify-end gap-2.5 text-xs">${footerButtonsHtml}</div>` : ''}
+            </div>
+        `;
+        m.onclick = () => SolarOpsPages.closeModal();
+    },
+
+    closeModal: function() {
+        const m = document.getElementById('solarops-dynamic-modal');
+        if (m) {
+            m.style.display = 'none';
+        }
+    },
+
+    showToast: function(msg) {
+        let toast = document.getElementById('solarops-floating-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'solarops-floating-toast';
+            document.body.appendChild(toast);
+        }
+        toast.style.cssText = 'position: fixed !important; bottom: 24px !important; right: 24px !important; z-index: 999999 !important; display: flex !important;';
+        toast.className = 'bg-slate-900 text-white px-5 py-3.5 rounded-xl shadow-2xl items-center gap-3 border border-slate-700 text-xs font-semibold';
+        toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400 text-base"></i> <span>${msg}</span>`;
+        setTimeout(() => { if (toast) toast.style.display = 'none'; }, 3500);
+    },
+
+    // ── 1. SOLAR PLANTS MANAGEMENT ──
     getPlants: function() {
         try {
             const stored = localStorage.getItem('solarops_plants_data');
@@ -64,13 +113,80 @@ window.SolarOpsPages = {
     },
 
     openAddPlantModal: function() {
-        const modal = document.getElementById('solarops-plant-modal');
-        if (modal) modal.classList.remove('hidden');
-    },
+        const formHtml = `
+            <form id="new-plant-form" onsubmit="return SolarOpsPages.submitNewPlant(event)" class="space-y-3.5">
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Plant Name *</label>
+                    <input id="np-name" type="text" placeholder="e.g. Apex Footwear Gazipur Unit" required
+                           class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 font-medium text-slate-800" />
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Location *</label>
+                        <input id="np-location" type="text" placeholder="e.g. Kashimpur, Gazipur" required
+                               class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 font-medium text-slate-800" />
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Capacity (kWp) *</label>
+                        <input id="np-capacity" type="number" step="1" min="5" max="5000" value="75" required
+                               class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 font-medium text-slate-800" />
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">PV Modules</label>
+                        <input id="np-modules" type="text" value="138 × Longi Hi-MO 6 550W"
+                               class="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-800" />
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Inverter Model</label>
+                        <input id="np-inverters" type="text" value="1 × Huawei SUN2000-60KTL"
+                               class="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-800" />
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Utility DisCom</label>
+                        <select id="np-discom" class="w-full px-3 py-2 border border-slate-200 rounded-lg bg-white text-slate-800 font-medium">
+                            <option value="DESCO">DESCO (Dhaka North)</option>
+                            <option value="DPDC">DPDC (Dhaka South)</option>
+                            <option value="BPDB">BPDB (Chittagong/Urban)</option>
+                            <option value="BREB">BREB / Palli Bidyut</option>
+                            <option value="WZPDCL">WZPDCL (Khulna)</option>
+                            <option value="NESCO">NESCO (Rajshahi)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Initial Status</label>
+                        <select id="np-status" class="w-full px-3 py-2 border border-slate-200 rounded-lg bg-white text-slate-800 font-medium">
+                            <option value="Online">🟢 Online (Active)</option>
+                            <option value="Maintenance">🟡 Maintenance</option>
+                            <option value="Testing">🔵 Commissioning / Testing</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Net Metering Status</label>
+                    <select id="np-nem" class="w-full px-3 py-2 border border-slate-200 rounded-lg bg-white text-slate-800 font-medium">
+                        <option value="Active NEM">Active (Agreement Signed)</option>
+                        <option value="Step 5: Testing">Step 5: Anti-Islanding Joint Inspection</option>
+                        <option value="Step 2: Feasibility">Step 2: DisCom Feasibility Check</option>
+                        <option value="Pending Evaluation">Application Submitted</option>
+                    </select>
+                </div>
+            </form>
+        `;
 
-    closeAddPlantModal: function() {
-        const modal = document.getElementById('solarops-plant-modal');
-        if (modal) modal.classList.add('hidden');
+        const footerButtons = `
+            <button type="button" onclick="SolarOpsPages.closeModal()" class="px-4 py-2 border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-100 font-medium cursor-pointer">
+                Cancel
+            </button>
+            <button type="button" onclick="SolarOpsPages.submitNewPlant(event)" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold shadow flex items-center gap-1.5 cursor-pointer">
+                <i class="fa-solid fa-check"></i> Register Plant
+            </button>
+        `;
+
+        SolarOpsPages.showModal('<i class="fa-solid fa-solar-panel text-blue-600"></i> Register New Solar Plant', formHtml, footerButtons);
     },
 
     submitNewPlant: function(e) {
@@ -85,7 +201,7 @@ window.SolarOpsPages = {
         const status = document.getElementById('np-status')?.value || 'Online';
 
         if (!name || !location) {
-            alert('Please provide Plant Name and Location');
+            alert('Please fill in Plant Name and Location');
             return false;
         }
 
@@ -108,9 +224,9 @@ window.SolarOpsPages = {
 
         plants.unshift(newPlant);
         SolarOpsPages.savePlants(plants);
-        SolarOpsPages.closeAddPlantModal();
+        SolarOpsPages.closeModal();
         SolarOpsPages.refreshPlantsView();
-        SolarOpsPages.showToast('✅ New plant "' + name + '" successfully added!');
+        SolarOpsPages.showToast('✅ New plant "' + name + '" successfully added to fleet!');
         return false;
     },
 
@@ -127,15 +243,6 @@ window.SolarOpsPages = {
         const root = document.getElementById('solarops-plants-root');
         if (root) {
             root.outerHTML = SolarOpsPages.renderPlants();
-        }
-    },
-
-    showToast: function(msg) {
-        const toast = document.getElementById('solarops-toast');
-        if (toast) {
-            toast.innerHTML = '<i class="fa-solid fa-circle-check text-lg"></i> <span>' + msg + '</span>';
-            toast.classList.remove('hidden');
-            setTimeout(() => toast.classList.add('hidden'), 3500);
         }
     },
 
@@ -156,7 +263,6 @@ window.SolarOpsPages = {
         SolarOpsPages.showToast('📊 Solar Plants CSV Exported!');
     },
 
-    // 1. SOLAR PLANTS
     renderPlants: function() {
         const plants = SolarOpsPages.getPlants();
         const totalPlants = plants.length;
@@ -184,7 +290,7 @@ window.SolarOpsPages = {
                         </div>
                         <div class="text-right">
                             <span class="text-xl font-extrabold text-blue-600 block">${p.capacity} kWp</span>
-                            <button onclick="SolarOpsPages.deletePlant('${p.id}')" class="text-slate-300 hover:text-rose-500 text-xs mt-1 transition" title="Remove plant">
+                            <button onclick="SolarOpsPages.deletePlant('${p.id}')" class="text-slate-300 hover:text-rose-500 text-xs mt-1 transition cursor-pointer" title="Remove plant">
                                 <i class="fa-regular fa-trash-can"></i>
                             </button>
                         </div>
@@ -211,7 +317,7 @@ window.SolarOpsPages = {
                 </div>
                 <div class="px-5 py-3 bg-slate-50/70 border-t border-slate-100 flex justify-between items-center text-xs">
                     <span class="${isOnline ? 'text-slate-500' : 'text-rose-500 font-medium'}"><i class="fa-solid fa-satellite-dish text-slate-400 mr-1"></i> ${p.note}</span>
-                    <button onclick="if(window.solarApp) window.solarApp.selectPage('inverters')" class="text-blue-600 hover:text-blue-700 font-semibold flex items-center gap-1">
+                    <button onclick="if(window.solarApp) window.solarApp.selectPage('inverters')" class="text-blue-600 hover:text-blue-700 font-semibold flex items-center gap-1 cursor-pointer">
                         Open Telemetry <i class="fa-solid fa-arrow-right text-[10px]"></i>
                     </button>
                 </div>
@@ -220,9 +326,6 @@ window.SolarOpsPages = {
 
         return `
         <div id="solarops-plants-root" class="p-4 sm:p-6 space-y-6">
-            <!-- Toast notification -->
-            <div id="solarops-toast" class="hidden fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-5 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 border border-slate-700"></div>
-
             <!-- Header & Action -->
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
@@ -230,7 +333,7 @@ window.SolarOpsPages = {
                     <p class="text-sm text-slate-500">Commercial & Industrial (C&I) rooftop plants monitoring across Bangladesh</p>
                 </div>
                 <div class="flex gap-2">
-                    <button onclick="SolarOpsPages.exportPlantsCSV()" class="px-4 py-2 bg-white border border-slate-200 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-50 transition shadow-sm flex items-center gap-2">
+                    <button onclick="SolarOpsPages.exportPlantsCSV()" class="px-4 py-2 bg-white border border-slate-200 text-slate-700 text-sm font-medium rounded-lg hover:bg-slate-50 transition shadow-sm flex items-center gap-2 cursor-pointer">
                         <i class="fa-solid fa-download"></i> Export Data
                     </button>
                     <button onclick="SolarOpsPages.openAddPlantModal()" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition shadow flex items-center gap-2 cursor-pointer">
@@ -279,108 +382,40 @@ window.SolarOpsPages = {
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 ${cardsHtml}
             </div>
-
-            <!-- Add Plant Modal -->
-            <div id="solarops-plant-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-                <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-lg w-full overflow-hidden animate-fade-in" onclick="event.stopPropagation()">
-                    <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/60">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center text-sm font-bold">
-                                <i class="fa-solid fa-solar-panel"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-slate-800 text-base">Add New Solar Plant</h3>
-                                <p class="text-[11px] text-slate-500">Register new rooftop site into SolarOps monitoring fleet</p>
-                            </div>
-                        </div>
-                        <button onclick="SolarOpsPages.closeAddPlantModal()" class="text-slate-400 hover:text-slate-600 text-lg p-1">
-                            <i class="fa-solid fa-xmark"></i>
-                        </button>
-                    </div>
-
-                    <form onsubmit="return SolarOpsPages.submitNewPlant(event)" class="p-6 space-y-4 text-xs">
-                        <div>
-                            <label class="block font-semibold text-slate-700 mb-1">Plant Name *</label>
-                            <input id="np-name" type="text" placeholder="e.g. Apex Footwear Gazipur Plant" required
-                                   class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium text-slate-800" />
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Location / Division *</label>
-                                <input id="np-location" type="text" placeholder="e.g. Kashimpur, Gazipur" required
-                                       class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium text-slate-800" />
-                            </div>
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Capacity (kWp) *</label>
-                                <input id="np-capacity" type="number" step="1" min="5" max="5000" value="75" required
-                                       class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium text-slate-800" />
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Solar PV Modules</label>
-                                <input id="np-modules" type="text" value="138 × Longi Hi-MO 6 550W"
-                                       class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-800" />
-                            </div>
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Inverter Model</label>
-                                <input id="np-inverters" type="text" value="1 × Huawei SUN2000-60KTL"
-                                       class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-800" />
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Utility DisCom</label>
-                                <select id="np-discom" class="w-full px-3 py-2 border border-slate-200 rounded-lg bg-white text-slate-800 font-medium">
-                                    <option value="DESCO">DESCO (Dhaka North)</option>
-                                    <option value="DPDC">DPDC (Dhaka South)</option>
-                                    <option value="BPDB">BPDB (Chittagong/Urban)</option>
-                                    <option value="BREB">BREB / Palli Bidyut</option>
-                                    <option value="WZPDCL">WZPDCL (Khulna/Barisal)</option>
-                                    <option value="NESCO">NESCO (Rajshahi/Rangpur)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1">Initial Status</label>
-                                <select id="np-status" class="w-full px-3 py-2 border border-slate-200 rounded-lg bg-white text-slate-800 font-medium">
-                                    <option value="Online">🟢 Online (Active)</option>
-                                    <option value="Maintenance">🟡 Maintenance</option>
-                                    <option value="Testing">🔵 Testing / Commissioning</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block font-semibold text-slate-700 mb-1">Net Metering Status</label>
-                            <select id="np-nem" class="w-full px-3 py-2 border border-slate-200 rounded-lg bg-white text-slate-800 font-medium">
-                                <option value="Active NEM">Active (Agreement Signed)</option>
-                                <option value="Step 5: Testing">Step 5: Anti-Islanding Inspection</option>
-                                <option value="Step 2: Feasibility">Step 2: DisCom Feasibility Check</option>
-                                <option value="Pending Evaluation">Application Submitted</option>
-                            </select>
-                        </div>
-
-                        <div class="pt-3 border-t border-slate-100 flex justify-end gap-2.5">
-                            <button type="button" onclick="SolarOpsPages.closeAddPlantModal()"
-                                    class="px-4 py-2 border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 font-medium">
-                                Cancel
-                            </button>
-                            <button type="submit"
-                                    class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold shadow flex items-center gap-1.5 cursor-pointer">
-                                <i class="fa-solid fa-check"></i> Register Plant
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
         </div>
         `;
     },
 
-    // 2. INVERTERS
+    // ── 2. INVERTERS TELEMETRY ──
+    openInverterDetails: function(name, model, kw, dcV, dcA, temp, pr) {
+        const body = `
+            <div class="space-y-3">
+                <div class="p-3 bg-blue-50 rounded-xl border border-blue-200 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm">${name} — ${model}</h4>
+                        <p class="text-[11px] text-slate-500">Telemetry feed from Modbus Gateway (RS-485)</p>
+                    </div>
+                    <span class="text-lg font-black text-blue-600">${kw} kW</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div class="p-2.5 bg-slate-50 rounded-lg"><span class="text-slate-400 block">DC Voltage:</span><strong>${dcV} V</strong></div>
+                    <div class="p-2.5 bg-slate-50 rounded-lg"><span class="text-slate-400 block">DC Current:</span><strong>${dcA} A</strong></div>
+                    <div class="p-2.5 bg-slate-50 rounded-lg"><span class="text-slate-400 block">Grid Frequency:</span><strong>50.01 Hz</strong></div>
+                    <div class="p-2.5 bg-slate-50 rounded-lg"><span class="text-slate-400 block">Efficiency:</span><strong class="text-emerald-600">${pr}%</strong></div>
+                    <div class="p-2.5 bg-slate-50 rounded-lg"><span class="text-slate-400 block">Internal Heat Sink:</span><strong class="${temp.includes('58') ? 'text-rose-600 font-bold' : 'text-slate-700'}">${temp}</strong></div>
+                    <div class="p-2.5 bg-slate-50 rounded-lg"><span class="text-slate-400 block">Cooling Fan:</span><strong>2,400 RPM (Normal)</strong></div>
+                </div>
+                <div class="p-2.5 bg-slate-50 rounded-lg text-xs space-y-1">
+                    <span class="font-semibold text-slate-700 block">Harmonics & Grid Protection</span>
+                    <p class="text-slate-500">THD-i: 1.8% (&lt; 3% IEEE 519 compliant) • Anti-Islanding Relay: Armed • Insulation Resistance: 32 MΩ</p>
+                </div>
+            </div>
+        `;
+        SolarOpsPages.showModal('<i class="fa-solid fa-microchip text-blue-600"></i> Inverter Diagnostic Details', body, `
+            <button onclick="SolarOpsPages.closeModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-700 font-medium">Close</button>
+        `);
+    },
+
     renderInverters: function() {
         return `
         <div class="p-4 sm:p-6 space-y-6">
@@ -399,7 +434,8 @@ window.SolarOpsPages = {
             <!-- Inverter Cards Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Inverter 1 -->
-                <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-4 hover:shadow-md transition">
+                <div onclick="SolarOpsPages.openInverterDetails('INV-001','Huawei SUN2000-50KTL','38.2','580','66.0','42°C','98.4')"
+                     class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-4 hover:shadow-md transition cursor-pointer">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                         <div>
                             <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">INV-001</span>
@@ -419,18 +455,14 @@ window.SolarOpsPages = {
                         <div><span class="text-slate-400 block">Today:</span> <strong class="text-slate-700">215.2 kWh</strong></div>
                         <div><span class="text-slate-400 block">Efficiency:</span> <strong class="text-emerald-600">98.4%</strong></div>
                         <div><span class="text-slate-400 block">DC Voltage:</span> <strong class="text-slate-700">580 V</strong></div>
-                        <div><span class="text-slate-400 block">DC Current:</span> <strong class="text-slate-700">66.0 A</strong></div>
-                        <div><span class="text-slate-400 block">Grid Freq:</span> <strong class="text-slate-700">50.02 Hz</strong></div>
                         <div><span class="text-slate-400 block">Internal Temp:</span> <strong class="text-slate-700">42°C</strong></div>
                     </div>
-                    <div class="bg-slate-50 p-2.5 rounded-lg text-[11px] text-slate-600 flex justify-between">
-                        <span>MPPT 1: 29.5 kW</span>
-                        <span>MPPT 2: 8.7 kW</span>
-                    </div>
+                    <div class="text-[11px] text-blue-600 font-medium text-center pt-1">Click for live diagnostic telemetry →</div>
                 </div>
 
                 <!-- Inverter 2 -->
-                <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-4 hover:shadow-md transition">
+                <div onclick="SolarOpsPages.openInverterDetails('INV-002','Huawei SUN2000-50KTL','34.1','572','59.6','44°C','98.1')"
+                     class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-4 hover:shadow-md transition cursor-pointer">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                         <div>
                             <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">INV-002</span>
@@ -450,18 +482,14 @@ window.SolarOpsPages = {
                         <div><span class="text-slate-400 block">Today:</span> <strong class="text-slate-700">196.8 kWh</strong></div>
                         <div><span class="text-slate-400 block">Efficiency:</span> <strong class="text-emerald-600">98.1%</strong></div>
                         <div><span class="text-slate-400 block">DC Voltage:</span> <strong class="text-slate-700">572 V</strong></div>
-                        <div><span class="text-slate-400 block">DC Current:</span> <strong class="text-slate-700">59.6 A</strong></div>
-                        <div><span class="text-slate-400 block">Grid Freq:</span> <strong class="text-slate-700">49.98 Hz</strong></div>
                         <div><span class="text-slate-400 block">Internal Temp:</span> <strong class="text-slate-700">44°C</strong></div>
                     </div>
-                    <div class="bg-slate-50 p-2.5 rounded-lg text-[11px] text-slate-600 flex justify-between">
-                        <span>MPPT 1: 18.2 kW</span>
-                        <span>MPPT 2: 15.9 kW</span>
-                    </div>
+                    <div class="text-[11px] text-blue-600 font-medium text-center pt-1">Click for live diagnostic telemetry →</div>
                 </div>
 
                 <!-- Inverter 3 -->
-                <div class="bg-white rounded-xl border border-amber-300 shadow-sm p-5 space-y-4 hover:shadow-md transition relative">
+                <div onclick="SolarOpsPages.openInverterDetails('INV-003','Huawei SUN2000-50KTL','41.8','595','70.2','58°C (High)','97.6')"
+                     class="bg-white rounded-xl border border-amber-300 shadow-sm p-5 space-y-4 hover:shadow-md transition cursor-pointer relative">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                         <div>
                             <span class="text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded">INV-003</span>
@@ -479,19 +507,13 @@ window.SolarOpsPages = {
                     </div>
                     <div class="grid grid-cols-2 gap-2 text-xs border-t border-slate-100 pt-3">
                         <div><span class="text-slate-400 block">Today:</span> <strong class="text-slate-700">198.5 kWh</strong></div>
-                        <div><span class="text-slate-400 block">Efficiency:</span> <strong class="text-slate-700">97.6%</strong></div>
-                        <div><span class="text-slate-400 block">DC Voltage:</span> <strong class="text-slate-700">595 V</strong></div>
-                        <div><span class="text-slate-400 block">DC Current:</span> <strong class="text-slate-700">70.2 A</strong></div>
-                        <div><span class="text-slate-400 block">Grid Freq:</span> <strong class="text-slate-700">50.04 Hz</strong></div>
                         <div><span class="text-slate-400 block">Internal Temp:</span> <strong class="text-rose-600 font-extrabold text-sm">58°C 🔥</strong></div>
                     </div>
-                    <div class="bg-amber-50 p-2.5 rounded-lg text-[11px] text-amber-800 flex justify-between border border-amber-200">
-                        <span>Check cooling fan / ambient vent</span>
-                    </div>
+                    <div class="text-[11px] text-amber-700 font-medium text-center pt-1">Inspect thermal alarm details →</div>
                 </div>
 
                 <!-- Inverter 4 -->
-                <div class="bg-white rounded-xl border border-slate-200 opacity-80 shadow-sm p-5 space-y-4 hover:shadow-md transition">
+                <div class="bg-white rounded-xl border border-slate-200 opacity-80 shadow-sm p-5 space-y-4">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                         <div>
                             <span class="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">INV-004</span>
@@ -503,17 +525,6 @@ window.SolarOpsPages = {
                     <div class="text-center py-2 bg-slate-100 rounded-xl border border-slate-200">
                         <span class="text-xs text-slate-400 font-medium">Output Power</span>
                         <div class="text-2xl font-black text-slate-400">0.0 <span class="text-sm font-semibold text-slate-400">/ 30 kW</span></div>
-                        <div class="w-full bg-slate-200 h-1.5 rounded-full mt-2 max-w-[80%] mx-auto overflow-hidden">
-                            <div class="bg-slate-400 h-full rounded-full" style="width: 0%"></div>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2 text-xs border-t border-slate-100 pt-3">
-                        <div><span class="text-slate-400 block">Today:</span> <strong class="text-slate-500">0.0 kWh</strong></div>
-                        <div><span class="text-slate-400 block">Efficiency:</span> <strong class="text-slate-500">-- %</strong></div>
-                        <div><span class="text-slate-400 block">DC Voltage:</span> <strong class="text-slate-500">0 V</strong></div>
-                        <div><span class="text-slate-400 block">DC Current:</span> <strong class="text-slate-500">0.0 A</strong></div>
-                        <div><span class="text-slate-400 block">Grid Freq:</span> <strong class="text-slate-500">-- Hz</strong></div>
-                        <div><span class="text-slate-400 block">Internal Temp:</span> <strong class="text-slate-500">28°C</strong></div>
                     </div>
                     <div class="bg-rose-50 p-2.5 rounded-lg text-[11px] text-rose-700 flex justify-between border border-rose-200">
                         <span>Offline for scheduled overhaul</span>
@@ -524,7 +535,7 @@ window.SolarOpsPages = {
         `;
     },
 
-    // 3. ENERGY METERS (IoT)
+    // ── 3. ENERGY METERS (IoT) ──
     renderMeters: function() {
         return `
         <div class="p-4 sm:p-6 space-y-6">
@@ -555,7 +566,6 @@ window.SolarOpsPages = {
                         <div class="flex justify-between py-1 border-b border-slate-100"><span class="text-slate-500">Import Energy Today:</span><strong class="text-blue-600 font-bold">95.0 kWh</strong></div>
                         <div class="flex justify-between py-1 border-b border-slate-100"><span class="text-slate-500">Net Flow (Export - Import):</span><strong class="text-emerald-700 font-bold">+28.4 kWh (Credit)</strong></div>
                         <div class="flex justify-between py-1 border-b border-slate-100"><span class="text-slate-500">Line Voltage (L1-L2-L3):</span><strong class="text-slate-800 font-mono">402V / 401V / 399V</strong></div>
-                        <div class="flex justify-between py-1 border-b border-slate-100"><span class="text-slate-500">Power Factor (PF):</span><strong class="text-slate-800">0.98 Inductive</strong></div>
                         <div class="flex justify-between py-1"><span class="text-slate-500">Gateway Link:</span><strong class="text-emerald-600"><i class="fa-solid fa-wifi"></i> ESP32-MQTT Active</strong></div>
                     </div>
                 </div>
@@ -576,7 +586,6 @@ window.SolarOpsPages = {
                         <div class="flex justify-between py-1 border-b border-slate-100"><span class="text-slate-500">Import Energy Today:</span><strong class="text-blue-600 font-bold">47.8 kWh</strong></div>
                         <div class="flex justify-between py-1 border-b border-slate-100"><span class="text-slate-500">Net Flow (Export - Import):</span><strong class="text-emerald-700 font-bold">+36.4 kWh (Credit)</strong></div>
                         <div class="flex justify-between py-1 border-b border-slate-100"><span class="text-slate-500">Line Voltage:</span><strong class="text-slate-800 font-mono">398V / 400V / 397V</strong></div>
-                        <div class="flex justify-between py-1 border-b border-slate-100"><span class="text-slate-500">Power Factor (PF):</span><strong class="text-slate-800">0.97 Inductive</strong></div>
                         <div class="flex justify-between py-1"><span class="text-slate-500">Gateway Link:</span><strong class="text-emerald-600"><i class="fa-solid fa-wifi"></i> ESP32-MQTT Active</strong></div>
                     </div>
                 </div>
@@ -607,7 +616,63 @@ window.SolarOpsPages = {
         `;
     },
 
-    // 4. ALERTS
+    // ── 4. ALERTS & DIAGNOSTICS ──
+    openWebhooksModal: function() {
+        const body = `
+            <div class="space-y-3">
+                <p class="text-slate-500">Configure instant dispatch for critical inverter tripping, grid disconnect and islanding alarms.</p>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Telegram Bot Token / Chat ID</label>
+                    <input type="text" value="@SolarOpsAlertBot / -10049281928" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-800 font-mono" />
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Email Alert Recipients (comma separated)</label>
+                    <input type="text" value="shoeb.ops@company.bd, duty.engineer@solarops.com" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-800" />
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">SMS Alert Gateway (Teletalk/Grameenphone API)</label>
+                    <input type="text" value="+8801712000000, +8801819000000" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-800" />
+                </div>
+            </div>
+        `;
+        SolarOpsPages.showModal('<i class="fa-solid fa-bell text-blue-600"></i> Configure Alert Dispatch Webhooks', body, `
+            <button onclick="SolarOpsPages.closeModal()" class="px-4 py-2 border border-slate-200 rounded-lg text-slate-600">Cancel</button>
+            <button onclick="SolarOpsPages.closeModal(); SolarOpsPages.showToast('✅ Webhook channels updated successfully!');" class="px-5 py-2 bg-blue-600 text-white rounded-lg font-semibold">Save Webhooks</button>
+        `);
+    },
+
+    filterAlerts: function(val) {
+        const rows = document.querySelectorAll('#alerts-table-body tr');
+        rows.forEach(r => {
+            if (val === 'all') {
+                r.style.display = '';
+            } else if (val === 'critical') {
+                r.style.display = r.innerText.includes('CRITICAL') ? '' : 'none';
+            } else if (val === 'warning') {
+                r.style.display = r.innerText.includes('WARNING') ? '' : 'none';
+            }
+        });
+    },
+
+    acknowledgeAlert: function(btn) {
+        const tr = btn.closest('tr');
+        if (tr) {
+            const statusCell = tr.children[4];
+            if (statusCell) statusCell.innerHTML = '<span class="text-blue-600 font-semibold">Acknowledged</span>';
+            btn.innerText = 'Resolved';
+            btn.className = 'px-2 py-1 bg-emerald-100 text-emerald-700 rounded hover:bg-emerald-200 cursor-pointer';
+            SolarOpsPages.showToast('Alert marked as acknowledged by operator');
+        }
+    },
+
+    dismissAlert: function(btn) {
+        const tr = btn.closest('tr');
+        if (tr) {
+            tr.remove();
+            SolarOpsPages.showToast('Alert dismissed');
+        }
+    },
+
     renderAlerts: function() {
         return `
         <div class="p-4 sm:p-6 space-y-6">
@@ -617,8 +682,8 @@ window.SolarOpsPages = {
                     <p class="text-sm text-slate-500">Real-time anomaly detection, inverter fault codes and threshold notifications</p>
                 </div>
                 <div class="flex gap-2">
-                    <button class="px-3 py-1.5 bg-white border border-slate-200 text-xs font-semibold rounded-lg hover:bg-slate-50 text-slate-700">Acknowledge All</button>
-                    <button class="px-3 py-1.5 bg-blue-600 text-white text-xs font-semibold rounded-lg hover:bg-blue-700">Configure Webhooks</button>
+                    <button onclick="SolarOpsPages.showToast('All active alerts marked as acknowledged');" class="px-3 py-1.5 bg-white border border-slate-200 text-xs font-semibold rounded-lg hover:bg-slate-50 text-slate-700 cursor-pointer">Acknowledge All</button>
+                    <button onclick="SolarOpsPages.openWebhooksModal()" class="px-3 py-1.5 bg-blue-600 text-white text-xs font-semibold rounded-lg hover:bg-blue-700 cursor-pointer">Configure Webhooks</button>
                 </div>
             </div>
 
@@ -633,7 +698,7 @@ window.SolarOpsPages = {
                     <div><span class="text-xs text-amber-600 font-semibold uppercase">Warnings</span><h4 class="text-xl font-bold text-amber-800">2 Inverters</h4></div>
                 </div>
                 <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-xl flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-lg bg-emerald-500 text-white flex items-center justify-center font-bold"><i class="fa-solid fa-check"></i></div>
+                    <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold"><i class="fa-solid fa-check"></i></div>
                     <div><span class="text-xs text-emerald-600 font-semibold uppercase">Resolved (24h)</span><h4 class="text-xl font-bold text-emerald-800">5 Events</h4></div>
                 </div>
             </div>
@@ -643,10 +708,10 @@ window.SolarOpsPages = {
                 <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                     <h3 class="font-bold text-slate-800 text-sm">System Event Log</h3>
                     <div class="flex gap-2">
-                        <select class="text-xs bg-white border border-slate-200 rounded px-2 py-1 text-slate-600">
-                            <option>All Severities</option>
-                            <option>Critical Only</option>
-                            <option>Warnings Only</option>
+                        <select onchange="SolarOpsPages.filterAlerts(this.value)" class="text-xs bg-white border border-slate-200 rounded px-2.5 py-1 text-slate-700 font-medium">
+                            <option value="all">All Severities</option>
+                            <option value="critical">Critical Only</option>
+                            <option value="warning">Warnings Only</option>
                         </select>
                     </div>
                 </div>
@@ -662,14 +727,14 @@ window.SolarOpsPages = {
                                 <th class="p-3 text-right">Action</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100">
+                        <tbody id="alerts-table-body" class="divide-y divide-slate-100">
                             <tr class="hover:bg-red-50/30">
                                 <td class="p-3"><span class="px-2 py-0.5 bg-red-100 text-red-700 font-bold rounded">CRITICAL</span></td>
                                 <td class="p-3 font-semibold text-slate-800">Chittagong Warehouse<br><span class="text-slate-400 font-normal">Grid Disconnect (Island Mode)</span></td>
                                 <td class="p-3 text-slate-600">Grid voltage dropped below 176V; automatic island protection triggered on BPDB line</td>
                                 <td class="p-3 text-slate-500">18 min ago</td>
                                 <td class="p-3"><span class="text-red-600 font-semibold">Active</span></td>
-                                <td class="p-3 text-right"><button class="px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700">Inspect</button></td>
+                                <td class="p-3 text-right"><button onclick="SolarOpsPages.acknowledgeAlert(this)" class="px-2.5 py-1 bg-red-600 text-white rounded hover:bg-red-700 cursor-pointer">Inspect</button></td>
                             </tr>
                             <tr class="hover:bg-amber-50/30">
                                 <td class="p-3"><span class="px-2 py-0.5 bg-amber-100 text-amber-700 font-bold rounded">WARNING</span></td>
@@ -677,7 +742,7 @@ window.SolarOpsPages = {
                                 <td class="p-3 text-slate-600">Internal heat sink temperature reached 58°C (Threshold 55°C); fan speed check required</td>
                                 <td class="p-3 text-slate-500">42 min ago</td>
                                 <td class="p-3"><span class="text-amber-600 font-semibold">Investigating</span></td>
-                                <td class="p-3 text-right"><button class="px-2 py-1 bg-slate-100 text-slate-700 rounded hover:bg-slate-200">Acknowledge</button></td>
+                                <td class="p-3 text-right"><button onclick="SolarOpsPages.acknowledgeAlert(this)" class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded hover:bg-slate-200 cursor-pointer">Acknowledge</button></td>
                             </tr>
                             <tr class="hover:bg-slate-50">
                                 <td class="p-3"><span class="px-2 py-0.5 bg-amber-100 text-amber-700 font-bold rounded">WARNING</span></td>
@@ -685,7 +750,7 @@ window.SolarOpsPages = {
                                 <td class="p-3 text-slate-600">No telemetry packets received for >30 minutes (Offline for maintenance)</td>
                                 <td class="p-3 text-slate-500">3 hrs ago</td>
                                 <td class="p-3"><span class="text-slate-500 font-semibold">Maintenance Flag</span></td>
-                                <td class="p-3 text-right"><button class="px-2 py-1 bg-slate-100 text-slate-700 rounded hover:bg-slate-200">Details</button></td>
+                                <td class="p-3 text-right"><button onclick="SolarOpsPages.acknowledgeAlert(this)" class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded hover:bg-slate-200 cursor-pointer">Details</button></td>
                             </tr>
                             <tr class="hover:bg-slate-50">
                                 <td class="p-3"><span class="px-2 py-0.5 bg-blue-100 text-blue-700 font-bold rounded">INFO</span></td>
@@ -693,15 +758,7 @@ window.SolarOpsPages = {
                                 <td class="p-3 text-slate-600">Daily generation milestone reached: 400 kWh generated before 3:00 PM</td>
                                 <td class="p-3 text-slate-500">1 hr ago</td>
                                 <td class="p-3"><span class="text-emerald-600 font-semibold">Resolved</span></td>
-                                <td class="p-3 text-right"><button class="px-2 py-1 bg-slate-100 text-slate-500 rounded">Dismiss</button></td>
-                            </tr>
-                            <tr class="hover:bg-slate-50">
-                                <td class="p-3"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 font-bold rounded">RESOLVED</span></td>
-                                <td class="p-3 font-semibold text-slate-800">Dhaka Factory<br><span class="text-slate-400 font-normal">ESP32 Gateway</span></td>
-                                <td class="p-3 text-slate-600">MQTT broker connection re-established automatically after Wi-Fi blip</td>
-                                <td class="p-3 text-slate-500">Yesterday</td>
-                                <td class="p-3"><span class="text-emerald-600 font-semibold">Auto-Closed</span></td>
-                                <td class="p-3 text-right"><button class="px-2 py-1 bg-slate-100 text-slate-400 rounded cursor-not-allowed">Archived</button></td>
+                                <td class="p-3 text-right"><button onclick="SolarOpsPages.dismissAlert(this)" class="px-2.5 py-1 bg-slate-100 text-slate-500 rounded cursor-pointer">Dismiss</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -711,7 +768,40 @@ window.SolarOpsPages = {
         `;
     },
 
-    // 5. MAINTENANCE
+    // ── 5. MAINTENANCE WORK ORDERS ──
+    openScheduleWorkOrderModal: function() {
+        const body = `
+            <div class="space-y-3">
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Work Order Title *</label>
+                    <input id="wo-title" type="text" placeholder="e.g. Inverter Fan Replacement" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-800" />
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Target Plant</label>
+                        <select id="wo-plant" class="w-full px-3 py-2 border border-slate-200 rounded-lg bg-white text-slate-800">
+                            <option>Dhaka ReadyMade Factory</option>
+                            <option>Bay Shipping Warehouse</option>
+                            <option>GreenTech Gazipur</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Due Date</label>
+                        <input id="wo-date" type="date" value="2026-10-28" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-800" />
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Assigned Lead Technician</label>
+                    <input id="wo-tech" type="text" value="Engr. Tanvir Ahmed (Senior O&M Lead)" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-800" />
+                </div>
+            </div>
+        `;
+        SolarOpsPages.showModal('<i class="fa-solid fa-wrench text-blue-600"></i> Schedule Maintenance Task', body, `
+            <button onclick="SolarOpsPages.closeModal()" class="px-4 py-2 border border-slate-200 rounded-lg text-slate-600">Cancel</button>
+            <button onclick="SolarOpsPages.closeModal(); SolarOpsPages.showToast('✅ Work order successfully scheduled!');" class="px-5 py-2 bg-blue-600 text-white rounded-lg font-semibold">Schedule Order</button>
+        `);
+    },
+
     renderMaintenance: function() {
         return `
         <div class="p-4 sm:p-6 space-y-6">
@@ -720,7 +810,7 @@ window.SolarOpsPages = {
                     <h2 class="text-2xl font-bold text-slate-800">Preventive & Corrective Maintenance (O&M)</h2>
                     <p class="text-sm text-slate-500">Module cleaning schedule, electrical torque auditing, thermography inspection</p>
                 </div>
-                <button class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 shadow flex items-center gap-2">
+                <button onclick="SolarOpsPages.openScheduleWorkOrderModal()" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 shadow flex items-center gap-2 cursor-pointer">
                     <i class="fa-solid fa-calendar-plus"></i> Schedule Work Order
                 </button>
             </div>
@@ -767,7 +857,7 @@ window.SolarOpsPages = {
                     <div class="text-xs space-y-1 text-slate-600 pt-2 border-t border-slate-100">
                         <div><i class="fa-regular fa-clock text-slate-400 mr-1"></i> Executed: <strong>18 Oct 2026</strong></div>
                         <div><i class="fa-regular fa-user text-slate-400 mr-1"></i> Signed off: <strong>Chief Electrical Inspector</strong></div>
-                        <div><i class="fa-solid fa-shield-halved text-slate-400 mr-1"></i> Result: <strong>0.84 Ω (BNBC compliant < 1 Ω)</strong></div>
+                        <div><i class="fa-solid fa-shield-halved text-slate-400 mr-1"></i> Result: <strong>0.84 Ω (BNBC compliant &lt; 1 Ω)</strong></div>
                     </div>
                 </div>
             </div>
@@ -775,7 +865,36 @@ window.SolarOpsPages = {
         `;
     },
 
-    // 6. CUSTOMERS CRM
+    // ── 6. CUSTOMERS CRM ──
+    openAddClientModal: function() {
+        const body = `
+            <div class="space-y-3">
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Company / Factory Name *</label>
+                    <input type="text" placeholder="e.g. Square Pharmaceuticals Ltd" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-800" />
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Industry Sector</label>
+                        <input type="text" placeholder="e.g. Pharmaceuticals" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-800" />
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Rooftop Capacity (kWp)</label>
+                        <input type="number" value="120" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-800" />
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Key Contact Person & Email</label>
+                    <input type="text" placeholder="Engr. Asaduzzaman / asad@square.bd" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-800" />
+                </div>
+            </div>
+        `;
+        SolarOpsPages.showModal('<i class="fa-solid fa-user-plus text-blue-600"></i> Add Commercial Solar Client', body, `
+            <button onclick="SolarOpsPages.closeModal()" class="px-4 py-2 border border-slate-200 rounded-lg text-slate-600">Cancel</button>
+            <button onclick="SolarOpsPages.closeModal(); SolarOpsPages.showToast('✅ Client added to portfolio!');" class="px-5 py-2 bg-blue-600 text-white rounded-lg font-semibold">Save Client</button>
+        `);
+    },
+
     renderCustomers: function() {
         return `
         <div class="p-4 sm:p-6 space-y-6">
@@ -784,7 +903,7 @@ window.SolarOpsPages = {
                     <h2 class="text-2xl font-bold text-slate-800">Commercial Clients & Portfolios</h2>
                     <p class="text-sm text-slate-500">C&I client billing, contracts, tariff rates and SLA compliance</p>
                 </div>
-                <button class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 shadow flex items-center gap-2">
+                <button onclick="SolarOpsPages.openAddClientModal()" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 shadow flex items-center gap-2 cursor-pointer">
                     <i class="fa-solid fa-user-plus"></i> Add Client
                 </button>
             </div>
@@ -839,7 +958,37 @@ window.SolarOpsPages = {
         `;
     },
 
-    // 7. EPC PROJECTS PIPELINE
+    // ── 7. EPC PROJECTS PIPELINE ──
+    openNewProjectModal: function() {
+        const body = `
+            <div class="space-y-3">
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Project Name *</label>
+                    <input type="text" placeholder="e.g. Meghna Group 1 MWp Rooftop" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-800" />
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Target Capacity (kWp)</label>
+                        <input type="number" value="350" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-800" />
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Pipeline Stage</label>
+                        <select class="w-full px-3 py-2 border border-slate-200 rounded-lg bg-white text-slate-800">
+                            <option>1. Site Survey & LiDAR</option>
+                            <option>2. SREDA Approval</option>
+                            <option>3. Physical Installation</option>
+                            <option>4. Commissioned (COD)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        `;
+        SolarOpsPages.showModal('<i class="fa-solid fa-folder-plus text-blue-600"></i> Create EPC Installation Project', body, `
+            <button onclick="SolarOpsPages.closeModal()" class="px-4 py-2 border border-slate-200 rounded-lg text-slate-600">Cancel</button>
+            <button onclick="SolarOpsPages.closeModal(); SolarOpsPages.showToast('✅ EPC Project registered in pipeline!');" class="px-5 py-2 bg-blue-600 text-white rounded-lg font-semibold">Create Project</button>
+        `);
+    },
+
     renderProjects: function() {
         return `
         <div class="p-4 sm:p-6 space-y-6">
@@ -848,7 +997,7 @@ window.SolarOpsPages = {
                     <h2 class="text-2xl font-bold text-slate-800">Solar EPC Project Pipeline</h2>
                     <p class="text-sm text-slate-500">Engineering, Procurement & Construction lifecycle tracking</p>
                 </div>
-                <button class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 shadow flex items-center gap-2">
+                <button onclick="SolarOpsPages.openNewProjectModal()" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 shadow flex items-center gap-2 cursor-pointer">
                     <i class="fa-solid fa-plus"></i> New EPC Project
                 </button>
             </div>
@@ -928,7 +1077,31 @@ window.SolarOpsPages = {
         `;
     },
 
-    // 8. NET METERING WORKFLOW (BANGLADESH SREDA / BPDB / BREB / DESCO)
+    // ── 8. NET METERING WORKFLOW ──
+    openSlaPdfModal: function(plant, ref) {
+        const body = `
+            <div class="p-4 bg-slate-50 rounded-xl space-y-2 border border-slate-200">
+                <div class="flex justify-between border-b pb-2">
+                    <span class="text-slate-500">Applicant:</span>
+                    <strong class="text-slate-800">${plant}</strong>
+                </div>
+                <div class="flex justify-between border-b pb-2">
+                    <span class="text-slate-500">SREDA / Utility Ref:</span>
+                    <strong class="text-blue-700 font-mono">${ref}</strong>
+                </div>
+                <div class="flex justify-between border-b pb-2">
+                    <span class="text-slate-500">Agreement Type:</span>
+                    <strong class="text-slate-800">Bi-directional NEM 3-Phase SLA</strong>
+                </div>
+                <p class="text-xs text-slate-500 pt-1">This agreement authorizes grid synchronisation under Section 14 of the Bangladesh Net Metering Guidelines.</p>
+            </div>
+        `;
+        SolarOpsPages.showModal('<i class="fa-solid fa-file-contract text-emerald-600"></i> Net Metering SLA Contract Details', body, `
+            <button onclick="SolarOpsPages.closeModal()" class="px-4 py-2 border rounded-lg text-slate-600">Close</button>
+            <button onclick="SolarOpsPages.closeModal(); SolarOpsPages.showToast('📄 SLA Certificate downloaded!');" class="px-4 py-2 bg-emerald-600 text-white rounded-lg font-semibold">Download Signed Copy</button>
+        `);
+    },
+
     renderNetMetering: function() {
         return `
         <div class="p-4 sm:p-6 space-y-6">
@@ -937,7 +1110,7 @@ window.SolarOpsPages = {
                     <h2 class="text-2xl font-bold text-slate-800">Bangladesh Net Energy Metering (NEM) Workflow</h2>
                     <p class="text-sm text-slate-500">Official step-by-step compliance tracker as per SREDA & Ministry of Power Guidelines</p>
                 </div>
-                <a href="https://nem.powerdivision.gov.bd/" target="_blank" class="px-4 py-2 bg-emerald-600 text-white text-xs font-semibold rounded-lg hover:bg-emerald-700 shadow inline-flex items-center gap-1.5">
+                <a href="https://nem.powerdivision.gov.bd/" target="_blank" class="px-4 py-2 bg-emerald-600 text-white text-xs font-semibold rounded-lg hover:bg-emerald-700 shadow inline-flex items-center gap-1.5 cursor-pointer">
                     <i class="fa-solid fa-arrow-up-right-from-square"></i> NEM Portal (nem.powerdivision.gov.bd)
                 </a>
             </div>
@@ -952,31 +1125,31 @@ window.SolarOpsPages = {
                     </div>
                     <div class="grid grid-cols-2 md:grid-cols-7 gap-2 text-center text-xs">
                         <div class="p-2 rounded bg-emerald-50 text-emerald-800 font-bold border border-emerald-200">
-                            1. Application Submission
+                            1. Application
                             <span class="block text-[10px] text-emerald-600 mt-1 font-normal">Online portal</span>
                         </div>
                         <div class="p-2 rounded bg-emerald-50 text-emerald-800 font-bold border border-emerald-200">
-                            2. Feasibility & Inspection
-                            <span class="block text-[10px] text-emerald-600 mt-1 font-normal">DisCom Engineer Visit</span>
+                            2. Feasibility
+                            <span class="block text-[10px] text-emerald-600 mt-1 font-normal">DisCom Engineer</span>
                         </div>
                         <div class="p-2 rounded bg-emerald-50 text-emerald-800 font-bold border border-emerald-200">
-                            3. Formal Sanction Letter
+                            3. Sanction
                             <span class="block text-[10px] text-emerald-600 mt-1 font-normal">Capacity Allocation</span>
                         </div>
                         <div class="p-2 rounded bg-emerald-50 text-emerald-800 font-bold border border-emerald-200">
-                            4. EPC Plant Installation
+                            4. Installation
                             <span class="block text-[10px] text-emerald-600 mt-1 font-normal">Hardware mounting</span>
                         </div>
                         <div class="p-2 rounded bg-emerald-50 text-emerald-800 font-bold border border-emerald-200">
-                            5. Joint System Testing
-                            <span class="block text-[10px] text-emerald-600 mt-1 font-normal">Anti-islanding check</span>
+                            5. Testing
+                            <span class="block text-[10px] text-emerald-600 mt-1 font-normal">Anti-islanding</span>
                         </div>
                         <div class="p-2 rounded bg-blue-50 text-blue-800 font-bold border border-blue-200 animate-pulse">
-                            6. NEM Agreement Sign
-                            <span class="block text-[10px] text-blue-600 mt-1 font-normal">Tripartite Contract</span>
+                            6. Agreement
+                            <span class="block text-[10px] text-blue-600 mt-1 font-normal">Tripartite Sign</span>
                         </div>
                         <div class="p-2 rounded bg-slate-100 text-slate-500 font-bold border border-slate-200">
-                            7. Net Meter Installation
+                            7. Net Meter
                             <span class="block text-[10px] text-slate-400 mt-1 font-normal">Commercial COD</span>
                         </div>
                     </div>
@@ -1007,36 +1180,27 @@ window.SolarOpsPages = {
                                 <td class="p-3 font-semibold text-slate-800">ABC ReadyMade Garments Ltd</td>
                                 <td class="p-3 font-medium text-blue-700">DESCO (Dhaka)</td>
                                 <td class="p-3 font-bold text-slate-800">100 kWp</td>
-                                <td class="p-3 text-emerald-700 font-semibold">Step 7: Meter Installed & Billing Active</td>
+                                <td class="p-3 text-emerald-700 font-semibold">Step 7: Meter Active & Billing</td>
                                 <td class="p-3"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 font-bold rounded">Completed</span></td>
-                                <td class="p-3 text-right"><a href="#" class="text-blue-600 hover:underline"><i class="fa-solid fa-file-pdf"></i> Signed SLA</a></td>
+                                <td class="p-3 text-right"><button onclick="SolarOpsPages.openSlaPdfModal('ABC Garments','NEM-2025-DES-0491')" class="text-blue-600 hover:underline cursor-pointer"><i class="fa-solid fa-file-pdf"></i> Signed SLA</button></td>
                             </tr>
                             <tr class="hover:bg-slate-50">
                                 <td class="p-3 font-mono font-bold text-slate-800">NEM-2025-PDB-0112</td>
                                 <td class="p-3 font-semibold text-slate-800">Bay Shipping Logistics Corp</td>
                                 <td class="p-3 font-medium text-amber-700">BPDB (Chittagong)</td>
                                 <td class="p-3 font-bold text-slate-800">50 kWp</td>
-                                <td class="p-3 text-emerald-700 font-semibold">Step 7: Bi-directional Meter Active</td>
+                                <td class="p-3 text-emerald-700 font-semibold">Step 7: Bi-directional Active</td>
                                 <td class="p-3"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 font-bold rounded">Completed</span></td>
-                                <td class="p-3 text-right"><a href="#" class="text-blue-600 hover:underline"><i class="fa-solid fa-file-pdf"></i> Signed SLA</a></td>
+                                <td class="p-3 text-right"><button onclick="SolarOpsPages.openSlaPdfModal('Bay Shipping','NEM-2025-PDB-0112')" class="text-blue-600 hover:underline cursor-pointer"><i class="fa-solid fa-file-pdf"></i> Signed SLA</button></td>
                             </tr>
                             <tr class="hover:bg-slate-50">
                                 <td class="p-3 font-mono font-bold text-slate-800">NEM-2025-REB-0834</td>
                                 <td class="p-3 font-semibold text-slate-800">GreenTech Spinning Mills</td>
                                 <td class="p-3 font-medium text-emerald-700">BREB (Dhaka PBS-1)</td>
                                 <td class="p-3 font-bold text-slate-800">30 kWp</td>
-                                <td class="p-3 text-blue-700 font-semibold">Step 5: Joint Anti-Islanding Inspection</td>
+                                <td class="p-3 text-blue-700 font-semibold">Step 5: Anti-Islanding Inspection</td>
                                 <td class="p-3"><span class="px-2 py-0.5 bg-blue-100 text-blue-700 font-bold rounded">In Progress</span></td>
-                                <td class="p-3 text-right"><a href="#" class="text-blue-600 hover:underline"><i class="fa-solid fa-file-pdf"></i> Test Plan</a></td>
-                            </tr>
-                            <tr class="hover:bg-slate-50">
-                                <td class="p-3 font-mono font-bold text-slate-800">NEM-2026-DPDC-0041</td>
-                                <td class="p-3 font-semibold text-slate-800">Beximco Industrial Complex</td>
-                                <td class="p-3 font-medium text-purple-700">DPDC (Narayanganj)</td>
-                                <td class="p-3 font-bold text-slate-800">500 kWp</td>
-                                <td class="p-3 text-amber-700 font-semibold">Step 2: Feasibility & Transformer Capacity Check</td>
-                                <td class="p-3"><span class="px-2 py-0.5 bg-amber-100 text-amber-700 font-bold rounded">Govt. Review</span></td>
-                                <td class="p-3 text-right"><a href="#" class="text-blue-600 hover:underline"><i class="fa-solid fa-file-pdf"></i> SLD Drawing</a></td>
+                                <td class="p-3 text-right"><button onclick="SolarOpsPages.showToast('Test plan submitted to Palli Bidyut inspector')" class="text-blue-600 hover:underline cursor-pointer"><i class="fa-solid fa-file-pdf"></i> Test Plan</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -1046,7 +1210,49 @@ window.SolarOpsPages = {
         `;
     },
 
-    // 9. AUTOMATED REPORTS & AUDITS
+    // ── 9. AUTOMATED REPORTS ──
+    openStatementModal: function() {
+        const body = `
+            <div class="space-y-3 p-2 font-mono text-xs text-slate-700">
+                <div class="text-center pb-2 border-b">
+                    <h3 class="font-bold text-base text-slate-900">SOLAR ENERGY RECONCILIATION STATEMENT</h3>
+                    <p class="text-[10px] text-slate-500">Period: 01 Oct 2026 - 23 Oct 2026 | Utility: DESCO / BPDB</p>
+                </div>
+                <div class="space-y-1 text-[11px]">
+                    <div class="flex justify-between"><span>Gross Solar Generation:</span><strong>16,250 kWh</strong></div>
+                    <div class="flex justify-between"><span>On-site Self Consumption:</span><strong>11,480 kWh</strong></div>
+                    <div class="flex justify-between"><span>Grid Exported (NEM Credit):</span><strong class="text-emerald-700">+ 4,770 kWh</strong></div>
+                    <div class="flex justify-between"><span>Grid Imported (Night load):</span><strong class="text-blue-700">3,120 kWh</strong></div>
+                    <div class="flex justify-between border-t pt-1 font-bold"><span>Net Billable Credit:</span><strong class="text-emerald-700">+ 1,650 kWh (৳ 16,170 credit)</strong></div>
+                </div>
+                <div class="p-2 bg-slate-50 rounded border text-[10px]">
+                    Calculated under Bangladesh Industrial Tariff Category E-Flat @ ৳9.80/kWh.
+                </div>
+            </div>
+        `;
+        SolarOpsPages.showModal('<i class="fa-solid fa-file-invoice text-blue-600"></i> Monthly Energy Statement', body, `
+            <button onclick="SolarOpsPages.closeModal()" class="px-4 py-2 border rounded-lg text-slate-600">Close</button>
+            <button onclick="window.print()" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold flex items-center gap-1.5 cursor-pointer"><i class="fa-solid fa-print"></i> Print / Save PDF</button>
+        `);
+    },
+
+    downloadReport: function(type) {
+        let text = `SolarOps Bangladesh - ${type.toUpperCase()} REPORT\nGenerated: ${new Date().toISOString()}\n\n`;
+        text += `Fleet Overview:\n- Total Monitored Sites: 3\n- Fleet Capacity: 180 kWp\n- Average PR Ratio: 80.4%\n- Grid DisCom: DESCO, BPDB, BREB\n\n`;
+        text += `October 2026 Energy Yield: 16,250 kWh\nCarbon Offset: 10.07 Tonnes CO2 Avoided\nFinancial Savings: ৳ 1,59,250 BDT\n\n`;
+        text += `Verified by: Shariful Islam Shoeb, Lead System Engineer`;
+
+        const blob = new Blob([text], { type: 'text/plain;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `SolarOps_${type}_${new Date().toISOString().slice(0,10)}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        SolarOpsPages.showToast(`📊 ${type} Report Downloaded!`);
+    },
+
     renderReports: function() {
         return `
         <div class="p-4 sm:p-6 space-y-6">
@@ -1055,7 +1261,7 @@ window.SolarOpsPages = {
                     <h2 class="text-2xl font-bold text-slate-800">Solar Energy & ESG Reports</h2>
                     <p class="text-sm text-slate-500">Automated generation data export, carbon credit verification & financial summaries</p>
                 </div>
-                <button class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 shadow flex items-center gap-2">
+                <button onclick="SolarOpsPages.openStatementModal()" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 shadow flex items-center gap-2 cursor-pointer">
                     <i class="fa-solid fa-file-pdf"></i> Generate Monthly Statement
                 </button>
             </div>
@@ -1065,34 +1271,43 @@ window.SolarOpsPages = {
                     <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-lg"><i class="fa-solid fa-calendar-days"></i></div>
                     <h4 class="font-bold text-slate-800 text-base">Monthly Energy Yield Report</h4>
                     <p class="text-xs text-slate-500">Detailed day-by-day generation vs theoretical irradiance model, PR metrics, and grid export credit calculation.</p>
-                    <button class="w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 font-semibold rounded text-xs border border-slate-200">Download October 2026 PDF</button>
+                    <button onclick="SolarOpsPages.downloadReport('Monthly_Yield')" class="w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 font-semibold rounded text-xs border border-slate-200 cursor-pointer">Download October 2026 Statement</button>
                 </div>
 
                 <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
                     <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg"><i class="fa-solid fa-leaf"></i></div>
                     <h4 class="font-bold text-slate-800 text-base">ESG Carbon Offset Certificate</h4>
                     <p class="text-xs text-slate-500">Audited carbon reduction (tonnes CO₂) certified under Bangladesh Grid Emission factor (0.62 kg/kWh) for export compliance.</p>
-                    <button class="w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 font-semibold rounded text-xs border border-slate-200">Download Carbon Audit</button>
+                    <button onclick="SolarOpsPages.downloadReport('ESG_Carbon_Audit')" class="w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 font-semibold rounded text-xs border border-slate-200 cursor-pointer">Download Carbon Audit</button>
                 </div>
 
                 <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
                     <div class="w-10 h-10 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center text-lg"><i class="fa-solid fa-coins"></i></div>
                     <h4 class="font-bold text-slate-800 text-base">ROI & Financial Reconciliation</h4>
                     <p class="text-xs text-slate-500">Capex amortization, cumulative utility bill savings, and payback velocity analysis for factory CFOs.</p>
-                    <button class="w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 font-semibold rounded text-xs border border-slate-200">Export Financial XLSX</button>
+                    <button onclick="SolarOpsPages.downloadReport('Financial_Reconciliation')" class="w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 font-semibold rounded text-xs border border-slate-200 cursor-pointer">Export Financial Summary</button>
                 </div>
             </div>
         </div>
         `;
     },
 
-    // 10. SYSTEM SETTINGS & EQUIPMENT DATABASE
+    // ── 10. SETTINGS ──
+    saveSettings: function() {
+        SolarOpsPages.showToast('✅ Platform configuration saved successfully!');
+    },
+
     renderSettings: function() {
         return `
         <div class="p-4 sm:p-6 space-y-6">
-            <div>
-                <h2 class="text-2xl font-bold text-slate-800">Platform Settings & SREDA Database</h2>
-                <p class="text-sm text-slate-500">IoT endpoints, SREDA certified equipment registry, user roles and grid parameters</p>
+            <div class="flex justify-between items-center">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800">Platform Settings & SREDA Database</h2>
+                    <p class="text-sm text-slate-500">IoT endpoints, SREDA certified equipment registry, user roles and grid parameters</p>
+                </div>
+                <button onclick="SolarOpsPages.saveSettings()" class="px-4 py-2 bg-blue-600 text-white text-xs font-semibold rounded-lg hover:bg-blue-700 shadow cursor-pointer">
+                    Save Configuration
+                </button>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -1106,7 +1321,7 @@ window.SolarOpsPages = {
                     </div>
                     <div class="space-y-3 text-xs">
                         <div class="p-3 bg-slate-50 rounded-lg space-y-1">
-                            <span class="font-bold text-slate-800">Longi Solar Hi-MO 5 Series</span>
+                            <span class="font-bold text-slate-800">Longi Solar Hi-MO 5 / 6 Series</span>
                             <p class="text-slate-500">545W Mono PERC • 21.3% Efficiency • Tier 1 BloombergNEF • SREDA Reg: #MOD-BD-019</p>
                         </div>
                         <div class="p-3 bg-slate-50 rounded-lg space-y-1">
